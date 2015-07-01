@@ -1,5 +1,5 @@
 # wodu 我读
-一个Mobile APP (Android first, then iOS)，用来实现豆瓣读书里面的“我读”功能.
+豆瓣读书“我读” Android客户端
 
 ## Todo list
 * 实现用豆瓣账号登录
