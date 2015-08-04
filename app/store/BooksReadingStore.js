@@ -16,7 +16,7 @@ Ext.define('Wodu.store.BooksReadingStore', {
             extraParams: {
                 status: 'reading'
             },
-            url: 'https://api.douban.com/v2/book/user/57855213/collections',
+            url: 'https://api.douban.com/v2/book/user/xxx/collections',
             reader: {
                 type: 'json',
                 rootProperty: 'collections'
