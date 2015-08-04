@@ -7,3 +7,7 @@ bootstrap.css
 
 # sass cache folder
 resources/sass/.sass-cache/
+
+
+# cordova
+cordova/
