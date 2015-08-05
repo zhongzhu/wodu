@@ -14,10 +14,10 @@ Ext.define('Wodu.controller.main', {
     },
 
     onMainPanelInitialize: function(component, eOpts) {
-        var myToken = localStorage.myToken;
-        if (myToken === undefined) {
-            this.authentication();
-        }        
+        // var myToken = localStorage.myToken;
+        // if (myToken === undefined) {
+        //     this.authentication();
+        // }        
     },    
 
     authentication: function() {

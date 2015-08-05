@@ -3,16 +3,24 @@ Ext.define('Wodu.view.BooksReading', {
     xtype: 'booksreading',
 
     requires: [
-        'Ext.TitleBar', 
-        'Ext.Button',
-        'Ext.XTemplate'
+        'Ext.TitleBar',         
+        'Ext.XTemplate',
+        'Ext.dataview.List'
     ],
 
     config: {       
         items: [{
               xtype: 'list',
               store: 'BooksReadingStore',
-              itemTpl: ['<div>{book_id}</div>']
+              itemHeight: 140,
+              variableHeights: false,
+
+              itemTpl: [
+                '<div>',
+                '<div class="pic"><img width="90" src="{image}" style="float:left;margin-right:10px;"></div>',
+                '<div class="info"><h3>{title}</h3><span>{id}</span></div>',
+                '</div>'
+                ].join('')                
         }]      
     }
 });

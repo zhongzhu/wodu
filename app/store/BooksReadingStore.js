@@ -14,12 +14,14 @@ Ext.define('Wodu.store.BooksReadingStore', {
         proxy: {
             type: 'ajax',
             extraParams: {
-                status: 'reading'
+                status: 'reading',
+                apikey: 'xxx'
             },
-            url: 'https://api.douban.com/v2/book/user/xxx/collections',
+            url: 'https://api.douban.com/v2/book/user/yyy/collections',
             reader: {
                 type: 'json',
-                rootProperty: 'collections'
+                rootProperty: 'collections',
+                record: 'book'
             }
         }
     }

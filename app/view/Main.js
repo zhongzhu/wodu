@@ -19,14 +19,6 @@ Ext.define('Wodu.view.Main', {
             {
                 title: '想读',
                 iconCls: 'action',
-
-                items: [
-                    {
-                        docked: 'top',
-                        xtype: 'titlebar',
-                        title: 'Getting Started'
-                    }
-                ]
             },
             
             {
