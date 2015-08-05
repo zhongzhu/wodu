@@ -22,7 +22,7 @@ Ext.application({
     ],
 
     controllers: [
-        'main'
+        'Main', 'BooksReading'
     ],    
 
     stores: ['BooksReadingStore'],

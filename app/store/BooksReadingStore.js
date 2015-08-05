@@ -8,16 +8,13 @@ Ext.define('Wodu.store.BooksReadingStore', {
     ],
 
     config: {
-        autoLoad: true,
         model: 'Wodu.model.Book',
         storeId: 'BooksReadingStore',
         proxy: {
             type: 'ajax',
             extraParams: {
-                status: 'reading',
-                apikey: 'xxx'
+                status: 'reading'
             },
-            url: 'https://api.douban.com/v2/book/user/yyy/collections',
             reader: {
                 type: 'json',
                 rootProperty: 'collections',

@@ -13,17 +13,17 @@ Ext.define('Wodu.view.Main', {
             {
                 xtype: 'booksreading',
                 title: '在读',
-                iconCls: 'home'                
+                iconCls: 'time'                
             },
 
             {
                 title: '想读',
-                iconCls: 'action',
+                iconCls: 'star',
             },
             
             {
                 title: '读过',
-                iconCls: 'check2'
+                iconCls: 'organize'
             },
             {
                 title: '新书',
