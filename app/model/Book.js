@@ -7,10 +7,11 @@ Ext.define('Wodu.model.Book', {
 
     config: {
         fields: [
-            { name: 'title', type: 'auto' },
-            { name: 'image', type: 'auto' },
-            { name: 'book_id', type: 'auto' }
-
+            { name: 'title', type: 'string' },
+            { name: 'image', type: 'string' },
+            { name: 'author', type: 'string' },
+            { name: 'id', type: 'auto' }
         ]
+
     }
 });

@@ -3,12 +3,13 @@ Ext.define('Wodu.store.BooksReadingStore', {
 
     requires: [
         'Wodu.model.Book',
+        'Wodu.model.ReadingInfo',        
         'Ext.data.proxy.Ajax',
         'Ext.data.reader.Json'
     ],
 
     config: {
-        model: 'Wodu.model.Book',
+        model: 'Wodu.model.ReadingInfo',
         storeId: 'BooksReadingStore',
         proxy: {
             type: 'ajax',
@@ -16,8 +17,7 @@ Ext.define('Wodu.store.BooksReadingStore', {
             limitParam: false,
             reader: {
                 type: 'json',
-                rootProperty: 'collections',
-                record: 'book'
+                rootProperty: 'collections'
             }
         }
     }
