@@ -15,6 +15,7 @@ Ext.define('Wodu.controller.Main', {
 
     onMainPanelInitialize: function(component, eOpts) {
         localStorage.myApikey = 'xxx';
+        // localStorage.myId = 'yyy';
         var myToken = localStorage.myToken;
         if (myToken === undefined) {
             this.authentication();

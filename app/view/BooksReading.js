@@ -8,20 +8,20 @@ Ext.define('Wodu.view.BooksReading', {
         'Ext.dataview.List'
     ],
 
-    config: {       
+    config: {   
         items: [{
               xtype: 'list',
               itemId: 'booksreadinglist',
               store: 'BooksReadingStore',
-              itemHeight: 135,
+              itemHeight: '135px',
               variableHeights: false,
 
               itemTpl: [
-                '<div>',
-                '<div class="pic"><img width="75" src="{image}" style="float:left;margin-right:10px;"></div>',
-                '<div class="info"><h3>{title}</h3><span>{id}</span></div>',
-                '</div>'
-                ].join('')                
+                '<div class="img" style="background-image:url({image}); display:inline-block; width: 90px; height: 113px; background-repeat: no-repeat;background-size:100%;background-position:50%; float:left; margin-right:10px;"></div>',
+                '<div class="content" style="font-family:Helvetica,sans-serif;">',
+                  '<div class="title" style="font-size:13px; font-weight:bold;">{title}</div>',
+                  '<div class="book_id" style="font-size:10px;color:#666">{id}</div>',
+                '</div>']                             
         }]      
     }
 });

@@ -12,9 +12,8 @@ Ext.define('Wodu.store.BooksReadingStore', {
         storeId: 'BooksReadingStore',
         proxy: {
             type: 'ajax',
-            extraParams: {
-                status: 'reading'
-            },
+            pageParam: false,
+            limitParam: false,
             reader: {
                 type: 'json',
                 rootProperty: 'collections',

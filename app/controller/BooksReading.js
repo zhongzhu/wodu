@@ -13,21 +13,29 @@ Ext.define('Wodu.controller.BooksReading', {
         }            
     },
 
-    onBooksReadingNaviViewShow: function(component, eOpts) {      
+    onBooksReadingNaviViewShow: function(theBooksreadingNaviView, eOpts) {      
       var douban_user_id = localStorage.myId;      
       if (douban_user_id) {
         var store = Ext.getStore('BooksReadingStore');
-        var proxy = store.getProxy()
+        if (!store.alreadyLoadedBooksReading) {
+          store.on('load', function(theStore, records, successful, operation, eOpts) {          
+            theBooksreadingNaviView.getNavigationBar().setTitle('我在读的书(' + theStore.getTotalCount() + ')');          
+            
+            theStore.alreadyLoadedBooksReading = true;
+          });
 
-        proxy.setExtraParams({
-          start: 0,
-          count: 10,
-          apikey: localStorage.myApikey,
-        });
+          var proxy = store.getProxy();
+          proxy.setExtraParams({
+            start: 0,
+            count: 10,
+            status: 'reading',
+            apikey: localStorage.myApikey,
+          });
 
-        proxy.setUrl('https://api.douban.com/v2/book/user/' + douban_user_id + '/collections');
+          proxy.setUrl('https://api.douban.com/v2/book/user/' + douban_user_id + '/collections');
 
-        store.load();
+          store.load();
+        }
       }
     }
 
