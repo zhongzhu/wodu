@@ -15,11 +15,11 @@ Ext.define('Wodu.controller.Main', {
 
     onMainPanelInitialize: function(component, eOpts) {
         localStorage.myApikey = '0d8bbcbe916a9aec28a3363bb43fd0c4';
-        localStorage.myId = '57855213';
-        // var myToken = localStorage.myToken;
-        // if (myToken === undefined) {
-        //     this.authentication();
-        // }        
+        // localStorage.myId = '57855213';
+        var myToken = localStorage.myToken;
+        if (myToken === undefined) {
+            this.authentication();
+        }        
     },    
 
     authentication: function() {

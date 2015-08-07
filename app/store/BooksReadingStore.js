@@ -14,6 +14,12 @@ Ext.define('Wodu.store.BooksReadingStore', {
         proxy: {
             type: 'ajax',
             limitParam: 'count',
+            extraParams: {
+                fields: 'updated,id,book_id,book',
+                status: 'reading',
+                apikey: localStorage.myApikey
+            },
+            url: 'https://api.douban.com/v2/book/user/' + localStorage.myId + '/collections',
             reader: {
                 type: 'json',
                 rootProperty: 'collections'
