@@ -1,9 +1,11 @@
 Ext.define('Wodu.view.Main', {
     extend: 'Ext.tab.Panel',
     xtype: 'main',
+
     requires: [
-        'Ext.TitleBar',
+        'Ext.TitleBar'
     ],
+    
     config: {
         tabBar: {
             docked: 'bottom'
@@ -18,7 +20,7 @@ Ext.define('Wodu.view.Main', {
 
             {
                 title: '想读',
-                iconCls: 'star',
+                iconCls: 'star'
             },
             
             {

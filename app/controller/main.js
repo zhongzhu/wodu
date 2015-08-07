@@ -29,7 +29,7 @@ Ext.define('Wodu.controller.Main', {
             token_url: 'https://www.douban.com/service/auth2/token',  // required if response_type = 'code'
             logout_url: '',         // recommended if available
             client_id: localStorage.myApikey,  // required
-            client_secret: 'yyy',      // required if response_type = 'code'
+            client_secret: 'xxx',      // required if response_type = 'code'
             redirect_uri: 'http://localhost',       // required - some dummy url
             other_params: {scope: 'shuo_basic_r,shuo_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
         }, function(token, response){

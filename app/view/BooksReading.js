@@ -5,7 +5,8 @@ Ext.define('Wodu.view.BooksReading', {
     requires: [
         'Ext.TitleBar',         
         'Ext.XTemplate',
-        'Ext.dataview.List'
+        'Ext.dataview.List',
+        'Ext.plugin.ListPaging'
     ],
 
     config: {   
@@ -13,8 +14,16 @@ Ext.define('Wodu.view.BooksReading', {
               xtype: 'list',
               itemId: 'booksreadinglist',
               store: 'BooksReadingStore',
+              disableSelection: true,
               itemHeight: '135px',
               variableHeights: false,
+
+              plugins: [
+                  {
+                      xclass: 'Ext.plugin.ListPaging',
+                      autoPaging: true
+                  }
+              ],              
 
               itemTpl: [
                 '<div class="img" style="background-image:url({book.image}); display:inline-block; width: 90px; height: 113px; background-repeat: no-repeat;background-size:100%;background-position:50%; float:left; margin-right:10px;"></div>',
