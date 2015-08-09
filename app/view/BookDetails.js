@@ -16,7 +16,7 @@ Ext.define('Wodu.view.BookDetails', {
         items: [
             {
                 xtype: 'label',
-                height: '150px',
+                height: '170px',
                 margin: '10px 5px 0 5px',
                 itemId: 'book_title',
                 name: 'title',
@@ -25,11 +25,11 @@ Ext.define('Wodu.view.BookDetails', {
                         '<div class="img" style="background-image:url({book.image}); display:inline-block; width: 110px; height: 140px; background-repeat: no-repeat;background-size:100%;background-position:50%; float:left; margin-right:10px;"></div>',
                         '<div class="content" style="font-size:10px;">',
                           '<div class="title" style="font-weight:bold;font-size:13px;">{book.title}</div>',
-                          '<div style="color:#666;margin-top:10px">作者:   {book.author}</div>',
-                          '<div style="color:#666;margin-top:2px">出版商: {book.publisher}</div>',
-                          '<div style="color:#666;margin-top:2px">出版:   {book.pubdate}</div>',
-                          '<div style="color:#666;margin-top:2px">页数:   {book.pages}</div>',
-                          '<div style="color:#666;margin-top:2px">评价:   {book.rating.average}</div>',
+                          '<div style="margin-top:10px"><span style="color:#666;">作者:   </span>{book.author}</div>',
+                          '<div style="margin-top:2px"><span style="color:#666;">出版商: </span>{book.publisher}</div>',
+                          '<div style="margin-top:2px"><span style="color:#666;">出版:   </span>{book.pubdate}</div>',
+                          '<div style="margin-top:2px"><span style="color:#666;">页数:   </span>{book.pages}</div>',
+                          '<div style="margin-top:4px"><span style="color:#666;">评价:   </span>{book.rating.average}/10</div>',
                         '</div>',
                     '</div>'
                 ].join('')                  

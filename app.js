@@ -18,7 +18,7 @@ Ext.application({
     ],
 
     views: [
-        'Main', 'BooksReading'
+        'Main', 'BooksReadingNaviView'
     ],
 
     controllers: [
@@ -45,12 +45,45 @@ Ext.application({
         '1496x2048': 'resources/startup/1496x2048.png'
     },
 
+   authentication: function() {
+        $.oauth2({
+            auth_url: 'https://www.douban.com/service/auth2/auth',  // required
+            response_type: 'code',      // required - "code"/"token"
+            token_url: 'https://www.douban.com/service/auth2/token',  // required if response_type = 'code'
+            logout_url: '',         // recommended if available
+            client_id: localStorage.myApikey,  // required
+            client_secret: '7d5e2e16976b6d4a',      // required if response_type = 'code'
+            redirect_uri: 'http://localhost',       // required - some dummy url
+            other_params: {scope: 'shuo_basic_r,shuo_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
+        }, function(token, response){
+            localStorage.myToken = token;
+            localStorage.myId = response.douban_user_id;
+            localStorage.myRefreshToken = response.refresh_token;
+            localStorage.myName = response.douban_user_name;
+
+            Ext.Viewport.add(Ext.create('Wodu.view.Main'));
+        }, function(error, response){
+            localStorage.removeItem('myToken');         
+        });
+    },    
+
     launch: function() {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
+    
+        localStorage.myApikey = 'xxx';
+        // localStorage.myId = 'yyy';
+        // localStorage.myToken = 'test';
+
+        var myToken = localStorage.myToken;
+        if (myToken === undefined) {
+            this.authentication();
+        } else {
+            Ext.Viewport.add(Ext.create('Wodu.view.Main'));
+        }   
 
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('Wodu.view.Main'));
+        // Ext.Viewport.add(Ext.create('Wodu.view.Main'));
     },
 
     onUpdated: function() {

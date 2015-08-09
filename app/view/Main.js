@@ -13,7 +13,7 @@ Ext.define('Wodu.view.Main', {
 
         items: [
             {
-                xtype: 'booksreading',
+                xtype: 'booksreadingnaviview',
                 title: '在读',
                 iconCls: 'time'                
             },
