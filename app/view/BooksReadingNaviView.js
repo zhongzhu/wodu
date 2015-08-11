@@ -6,7 +6,7 @@ Ext.define('Wodu.view.BooksReadingNaviView', {
       'Wodu.view.BooksReadingList'
     ],
 
-    config: {    	
+    config: {
         items: [{xtype: 'booksreadinglist'}]      
     }
 });

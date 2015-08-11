@@ -18,14 +18,14 @@ Ext.application({
     ],
 
     views: [
-        'Main', 'BooksReadingNaviView'
+        'Main', 'BooksReadingNaviView', 'BooksWishNaviView'
     ],
 
     controllers: [
-        'Main', 'BooksReading'
+        'Main', 'BooksReading', 'BooksWish'
     ],    
 
-    stores: ['BooksReadingStore'],
+    stores: ['BooksReadingStore', 'BooksWishStore'],
 
     icon: {
         '57': 'resources/icons/Icon.png',
@@ -71,9 +71,9 @@ Ext.application({
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
     
-        localStorage.myApikey = 'xxx';
-        localStorage.myId = 'yyy';
-        // localStorage.myToken = 'kkk';
+        localStorage.myApikey = 'xx';
+        localStorage.myId = 'yy';
+        // localStorage.myToken = 'test';
 
         var myToken = localStorage.myToken;
         if (myToken === undefined) {

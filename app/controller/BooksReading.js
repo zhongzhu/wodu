@@ -16,7 +16,7 @@ Ext.define('Wodu.controller.BooksReading', {
         control: {
             booksReadingNaviView: {
                 show: 'onBooksReadingNaviViewShow',
-                pop: 'onBooksReadingNaviViewPop'
+                activeitemchange: 'onBooksReadingNaviViewActiveItemChange'
             },
 
             'booksreadinglist': {
@@ -25,17 +25,17 @@ Ext.define('Wodu.controller.BooksReading', {
 
             'bookdetails #bookdetails_actionbutton': {
                 tap: 'onBookDetailsActionButtonTap'
-            }            
+            }
         } 
     },
 
     /** if return from bookdetails to booksreadinglist, set the naviview title
     */
-    onBooksReadingNaviViewPop: function(theBooksReadingNaviView, view, eOpts) {
-      console.log('onBooksReadingNaviViewPop');      
-      if (view.isXType('bookdetails')) {
+    onBooksReadingNaviViewActiveItemChange: function(theBooksReadingNaviView, value, oldValue, eOpts) {
+      console.log('onBooksReadingNaviViewActiveItemChange');      
+      if (oldValue.isXType('bookdetails')) {
         this.showTotalBooksReadingTitle(Ext.getStore('BooksReadingStore'));
-      }      
+      }
     },
 
     /** update BooksReadingNavView's title    
@@ -71,7 +71,6 @@ Ext.define('Wodu.controller.BooksReading', {
           proxy.setExtraParams({
             fields: 'updated,id,book_id,book',
             status: 'reading',
-            count: 5,
             apikey: localStorage.myApikey
           });
 

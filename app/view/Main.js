@@ -19,6 +19,7 @@ Ext.define('Wodu.view.Main', {
             },
 
             {
+                xtype: 'bookswishnaviview',
                 title: '想读',
                 iconCls: 'star'
             },
