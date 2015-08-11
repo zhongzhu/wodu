@@ -7,7 +7,8 @@ Ext.define('Wodu.view.BookDetails', {
         'Ext.Label',
         'Ext.form.FieldSet',
         'Ext.field.TextArea',
-        'Ext.field.Radio'
+        'Ext.field.Radio',
+        'Ext.field.Hidden'
     ],
 
     config: {
@@ -35,6 +36,11 @@ Ext.define('Wodu.view.BookDetails', {
                 ].join('')                  
             },
             {
+                xtype: 'hiddenfield',
+                name: 'id',
+                itemId: 'book_id'
+            },
+            {
                 xtype: 'textareafield',
                 style: 'font-size: 13px; margin: 0 .5em 0 .5em;',
                 clearIcon: false,
@@ -46,6 +52,7 @@ Ext.define('Wodu.view.BookDetails', {
            {
                 margin: '1em .5em 1.5em .5em',
                 xtype: 'button',
+                itemId: 'bookdetails_actionbutton',
                 ui: 'confirm-round',
                 text: '看完了'
             }

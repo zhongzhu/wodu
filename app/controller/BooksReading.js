@@ -9,7 +9,8 @@ Ext.define('Wodu.controller.BooksReading', {
 
     config: {
         refs: {
-            booksReadingNaviView: 'booksreadingnaviview'
+            booksReadingNaviView: 'booksreadingnaviview',
+            bookDetails: 'bookdetails'
         },
 
         control: {
@@ -20,7 +21,11 @@ Ext.define('Wodu.controller.BooksReading', {
 
             'booksreadinglist': {
               itemtap: 'onBooksReadinglistItemTap' 
-            }
+            },
+
+            'bookdetails #bookdetails_actionbutton': {
+                tap: 'onBookDetailsActionButtonTap'
+            }            
         } 
     },
 
@@ -66,6 +71,7 @@ Ext.define('Wodu.controller.BooksReading', {
           proxy.setExtraParams({
             fields: 'updated,id,book_id,book',
             status: 'reading',
+            count: 5,
             apikey: localStorage.myApikey
           });
 
@@ -78,6 +84,7 @@ Ext.define('Wodu.controller.BooksReading', {
 
     onBooksReadinglistItemTap: function(theList, index, target, record, e, eOpts) {
       console.log('onBooksReadinglistItemTap');
+      console.log(record);
 
       var bookDetailsView = Ext.create('Wodu.view.BookDetails');
 
@@ -85,6 +92,53 @@ Ext.define('Wodu.controller.BooksReading', {
       bookDetailsView.down('#book_title').setData(record.data);
 
       this.getBooksReadingNaviView().push(bookDetailsView);
-    }
+    },
+
+    onBookDetailsActionButtonTap: function(theButton, e, eOpts) {
+        console.log('onBookDetailsActionButtonTap');
+
+        var bookId = this.getBookDetails().down('#book_id').getValue();
+        console.log(bookId);
+
+        var buttonText = theButton.getText();        
+        if (buttonText === '看完了') {
+            console.log('going to do ajax');
+            // 用户修改对某本图书的收藏
+            // PUT  https://api.douban.com/v2/book/:id/collection
+            // status   收藏状态    必填（想读：wish 在读：reading 或 doing 读过：read 或 done）
+            $.ajax({
+                url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
+                method: 'PUT',
+                data: 'status=read',
+                headers: {Authorization: 'Bearer ' + localStorage.myToken}
+            }).done(function(response) {
+                var store = Ext.getStore('BooksReadingStore');
+                store.remove(store.getById(response.id));
+
+                this.getBookDetails().down('#book_id').setText('正在看这本书');
+            }).fail(function(response) {
+                console.log('fail');
+                console.log(response);
+                Ext.Msg.alert('出错了', '无法改变成已读状态');
+            })
+        } else if (buttonText === '正在看这本书') {
+            $.ajax({
+                url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
+                method: 'PUT',
+                data: 'status=reading',
+                headers: {Authorization: 'Bearer ' + localStorage.myToken}
+            }).done(function(response) {
+                var store = Ext.getStore('BooksReadingStore');
+                store.add(store.getById(response.id));
+
+                this.getBookDetails().down('#book_id').setText('看完了');
+            }).fail(function(response) {
+                console.log('fail');
+                console.log(response);
+                Ext.Msg.alert('出错了', '无法改变成正在读状态');
+            })          
+        }
+
+    }    
 
 });

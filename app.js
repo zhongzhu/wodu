@@ -52,9 +52,9 @@ Ext.application({
             token_url: 'https://www.douban.com/service/auth2/token',  // required if response_type = 'code'
             logout_url: '',         // recommended if available
             client_id: localStorage.myApikey,  // required
-            client_secret: '7d5e2e16976b6d4a',      // required if response_type = 'code'
+            client_secret: 'yyy',      // required if response_type = 'code'
             redirect_uri: 'http://localhost',       // required - some dummy url
-            other_params: {scope: 'shuo_basic_r,shuo_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
+            other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
         }, function(token, response){
             localStorage.myToken = token;
             localStorage.myId = response.douban_user_id;
@@ -72,8 +72,8 @@ Ext.application({
         Ext.fly('appLoadingIndicator').destroy();
     
         localStorage.myApikey = 'xxx';
-        // localStorage.myId = 'yyy';
-        // localStorage.myToken = 'test';
+        localStorage.myId = 'yyy';
+        // localStorage.myToken = 'kkk';
 
         var myToken = localStorage.myToken;
         if (myToken === undefined) {
