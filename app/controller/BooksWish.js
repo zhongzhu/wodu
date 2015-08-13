@@ -9,19 +9,24 @@ Ext.define('Wodu.controller.BooksWish', {
 
     config: {
         refs: {
-            booksWishNaviView: 'bookswishnaviview'            
+            theNaviView: 'bookswishnaviview'            
         },
 
         control: {
-            booksWishNaviView: {
-                show: 'onBooksWishNaviViewShow'
-            }
+            theNaviView: {
+                show: 'onNaviViewShow',
+                activeitemchange: 'onNaviViewActiveItemChange'
+            },
+
+            'bookswishlist': {
+              itemtap: 'onBooksWishlistItemTap' 
+            },
         } 
     },
 
    
 
-    onBooksWishNaviViewShow: function(theBooksWishNaviView, eOpts) {        
+    onNaviViewShow: function(theNaviView, eOpts) {        
       console.log('onBooksWishNaviViewShow');    
 
       var store = Ext.getStore('BooksWishStore');   
@@ -29,17 +34,16 @@ Ext.define('Wodu.controller.BooksWish', {
       if (0 === totalBooksReading && localStorage.myId) {
           console.log('store is empty. going to load');
           store.on('load', 
-            function(theStore, records, successful, operation, eOpts) {          
-              theBooksWishNaviView.getNavigationBar().setTitle('我想读的书(' + theStore.getTotalCount() + ')');
-            },
-            this
-          );
+            function(theStore, records, successful, operation, eOpts) {    
+              Wodu.util.Util.showNavBarTitle(theNaviView, '我想读的书(' + theStore.getTotalCount() + ')');      
+          });
 
           var proxy = store.getProxy();
           proxy.setExtraParams({
             fields: 'updated,id,book_id,book',
             status: 'wish',
-            apikey: localStorage.myApikey
+            count: 3,
+            apikey: Wodu.util.Util.myApikey
           });
 
           proxy.setUrl('https://api.douban.com/v2/book/user/' + localStorage.myId + '/collections');
@@ -47,7 +51,23 @@ Ext.define('Wodu.controller.BooksWish', {
           store.load();
       };
 
-    }
+    },
 
+    onBooksWishlistItemTap: function(theList, index, target, record, e, eOpts) {
+      console.log('onBooksWishlistItemTap');
+      var bookDetailsView = Ext.create('Wodu.view.BookDetails');
+
+      bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));
+      bookDetailsView.down('#book_title').setData(record.data);
+      bookDetailsView.down('#bookdetails_actionbutton').setText('开始看');
+
+      this.getTheNaviView().push(bookDetailsView);
+    },
+
+    onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
+      if (oldValue.isXType('bookdetails')) {
+        Wodu.util.Util.showNavBarTitle(theNaviView, '我想读的书(' + Ext.getStore('BooksWishStore').getTotalCount() + ')');
+      }
+    }    
 
 });

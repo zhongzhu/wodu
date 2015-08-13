@@ -25,6 +25,7 @@ Ext.define('Wodu.view.Main', {
             },
             
             {
+                xtype: 'booksreadnaviview',
                 title: '读过',
                 iconCls: 'organize'
             },

@@ -14,18 +14,19 @@ Ext.application({
     name: 'Wodu',
 
     requires: [
-        'Ext.MessageBox'
+        'Ext.MessageBox',
+        'Wodu.util.Util'
     ],
 
     views: [
-        'Main', 'BooksReadingNaviView', 'BooksWishNaviView'
+        'Main', 'BooksReadingNaviView', 'BooksWishNaviView', 'BooksReadNaviView'
     ],
 
     controllers: [
-        'Main', 'BooksReading', 'BooksWish'
+        'Main', 'BooksReading', 'BooksWish', 'BooksRead', 'BookDetails'
     ],    
 
-    stores: ['BooksReadingStore', 'BooksWishStore'],
+    stores: ['BooksReadingStore', 'BooksWishStore', 'BooksReadStore'],
 
     icon: {
         '57': 'resources/icons/Icon.png',
@@ -51,8 +52,8 @@ Ext.application({
             response_type: 'code',      // required - "code"/"token"
             token_url: 'https://www.douban.com/service/auth2/token',  // required if response_type = 'code'
             logout_url: '',         // recommended if available
-            client_id: localStorage.myApikey,  // required
-            client_secret: 'yyy',      // required if response_type = 'code'
+            client_id: Wodu.util.Util.myApikey,  // required
+            client_secret: Wodu.util.Util.mySecret,      // required if response_type = 'code'
             redirect_uri: 'http://localhost',       // required - some dummy url
             other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
         }, function(token, response){
@@ -71,9 +72,8 @@ Ext.application({
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
     
-        localStorage.myApikey = 'xx';
-        localStorage.myId = 'yy';
-        // localStorage.myToken = 'test';
+
+        // localStorage.myToken = 'xxx';
 
         var myToken = localStorage.myToken;
         if (myToken === undefined) {
