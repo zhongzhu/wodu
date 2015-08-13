@@ -23,7 +23,7 @@ Ext.define('Wodu.view.BooksReadingList', {
         '<div class="content" style="font-family:Helvetica,sans-serif;font-size:10px;">',
           '<div class="title" style="font-size:13px; font-weight:bold;">{book.title}</div>',
           '<div style="color:#666;margin:10px 0 10px 0">{book.author}</div>',
-          '<div style="color:#666">{begin_reading_date} 开始读</div>',
+          '<div style="color:#666">{begin_reading_date}开始读</div>',
         '</div>']                                 
     }
 });

@@ -20,18 +20,13 @@ Ext.define('Wodu.controller.BooksWish', {
 
             'bookswishlist': {
               itemtap: 'onBooksWishlistItemTap' 
-            },
+            }
         } 
     },
 
-   
-
     onNaviViewShow: function(theNaviView, eOpts) {        
-      console.log('onBooksWishNaviViewShow');    
-
       var store = Ext.getStore('BooksWishStore');   
-      var totalBooksReading = store.getCount();        
-      if (0 === totalBooksReading && localStorage.myId) {
+      if (0 === store.getCount() && localStorage.myId) {
           console.log('store is empty. going to load');
           store.on('load', 
             function(theStore, records, successful, operation, eOpts) {    
@@ -42,7 +37,6 @@ Ext.define('Wodu.controller.BooksWish', {
           proxy.setExtraParams({
             fields: 'updated,id,book_id,book',
             status: 'wish',
-            count: 3,
             apikey: Wodu.util.Util.myApikey
           });
 

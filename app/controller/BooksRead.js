@@ -34,7 +34,6 @@ Ext.define('Wodu.controller.BooksRead', {
       var store = Ext.getStore('BooksReadStore');   
 
       if (0 === store.getCount() && localStorage.myId) {
-          console.log('store is empty. going to load');
           store.on('load', 
             function(theStore, records, successful, operation, eOpts) {          
               Wodu.util.Util.showNavBarTitle(theNaviView, '我读过的书(' + theStore.getTotalCount() + ')');
@@ -44,7 +43,6 @@ Ext.define('Wodu.controller.BooksRead', {
           proxy.setExtraParams({
             fields: 'updated,id,book_id,book',
             status: 'read',
-            count: 3,
             apikey: Wodu.util.Util.myApikey
           });
 
@@ -61,7 +59,7 @@ Ext.define('Wodu.controller.BooksRead', {
 
       bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));
       bookDetailsView.down('#book_title').setData(record.data);
-      bookDetailsView.down('#bookdetails_actionbutton').hide();
+      bookDetailsView.down('#bookdetails_actionbutton').setText('还想再看一遍');
 
       this.getTheNaviView().push(bookDetailsView);
     }

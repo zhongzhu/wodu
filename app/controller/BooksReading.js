@@ -25,17 +25,13 @@ Ext.define('Wodu.controller.BooksReading', {
     },
 
     onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
-      console.log('onBooksReadingNaviViewActiveItemChange');      
       if (oldValue.isXType('bookdetails')) {
         Wodu.util.Util.showNavBarTitle(theNaviView, '我在读的书(' + Ext.getStore('BooksReadingStore').getTotalCount() + ')');
       }
     },
 
     onNaviViewShow: function(theBooksreadingNaviView, eOpts) {        
-      console.log('onBooksReadingNaviViewShow');  
-
       var store = Ext.getStore('BooksReadingStore');   
-
       if (0 === store.getCount() && localStorage.myId) {
           console.log('store is empty. going to load');
           store.on('load', 
@@ -47,7 +43,6 @@ Ext.define('Wodu.controller.BooksReading', {
           proxy.setExtraParams({
             fields: 'updated,id,book_id,book',
             status: 'reading',
-            count: 3,
             apikey: Wodu.util.Util.myApikey
           });
 
@@ -59,7 +54,6 @@ Ext.define('Wodu.controller.BooksReading', {
     },
 
     onBooksReadinglistItemTap: function(theList, index, target, record, e, eOpts) {
-      console.log('onBooksReadinglistItemTap');
       var bookDetailsView = Ext.create('Wodu.view.BookDetails');
 
       bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));

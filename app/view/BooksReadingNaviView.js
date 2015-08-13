@@ -7,6 +7,7 @@ Ext.define('Wodu.view.BooksReadingNaviView', {
     ],
 
     config: {
+    	autoDestroy: false,
         items: [{xtype: 'booksreadinglist'}]      
     }
 });
