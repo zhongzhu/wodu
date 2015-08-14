@@ -27,7 +27,6 @@ Ext.define('Wodu.controller.BooksWish', {
     onNaviViewShow: function(theNaviView, eOpts) {        
       var store = Ext.getStore('BooksWishStore');   
       if (0 === store.getCount() && localStorage.myId) {
-          console.log('store is empty. going to load');
           store.on('load', 
             function(theStore, records, successful, operation, eOpts) {    
               Wodu.util.Util.showNavBarTitle(theNaviView, '我想读的书(' + theStore.getTotalCount() + ')');      

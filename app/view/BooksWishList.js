@@ -15,8 +15,9 @@ Ext.define('Wodu.view.BooksWishList', {
 
       plugins: [{
         xclass: 'Ext.plugin.ListPaging',
-        autoPaging: true
-      }],              
+        autoPaging: true,
+        loadMoreText: '加载更多...'
+      }],          
 
       itemTpl: [
         '<div class="img" style="background-image:url({book.image}); display:inline-block; width: 90px; height: 113px; background-repeat: no-repeat;background-size:100%;background-position:50%; float:left; margin-right:10px;"></div>',

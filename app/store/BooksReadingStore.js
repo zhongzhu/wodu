@@ -11,6 +11,7 @@ Ext.define('Wodu.store.BooksReadingStore', {
     config: {
         model: 'Wodu.model.ReadingInfo',
         storeId: 'BooksReadingStore',
+        pageSize: 10,
         proxy: {
             type: 'ajax',
             limitParam: 'count',

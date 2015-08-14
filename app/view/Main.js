@@ -1,10 +1,6 @@
 Ext.define('Wodu.view.Main', {
     extend: 'Ext.tab.Panel',
     xtype: 'main',
-
-    requires: [
-        'Ext.TitleBar'
-    ],
     
     config: {
         tabBar: {
@@ -29,7 +25,9 @@ Ext.define('Wodu.view.Main', {
                 title: '读过',
                 iconCls: 'organize'
             },
+            
             {
+                xtype: 'searchbooksform',
                 title: '新书',
                 iconCls: 'search'
             }

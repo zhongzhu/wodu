@@ -19,14 +19,16 @@ Ext.application({
     ],
 
     views: [
-        'Main', 'BooksReadingNaviView', 'BooksWishNaviView', 'BooksReadNaviView'
+        'Main', 'BooksReadingNaviView', 'BooksWishNaviView', 'BooksReadNaviView', 'SearchBooksForm'
     ],
 
     controllers: [
-        'Main', 'BooksReading', 'BooksWish', 'BooksRead', 'BookDetails'
+        'Main', 'BooksReading', 'BooksWish', 'BooksRead', 'BookDetails', 'SearchBooks'
     ],    
 
-    stores: ['BooksReadingStore', 'BooksWishStore', 'BooksReadStore'],
+    stores: [
+        'BooksReadingStore', 'BooksWishStore', 'BooksReadStore', 'SearchBooksStore'
+    ],
 
     icon: {
         '57': 'resources/icons/Icon.png',

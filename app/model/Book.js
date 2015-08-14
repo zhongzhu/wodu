@@ -32,6 +32,7 @@ Ext.define('Wodu.model.Book', {
             { name: 'pubdate', type: 'string' },   
             { name: 'isbn13', type: 'string' }, 
             { name: 'pages', type: 'string' },                                 
+            { name: 'price', type: 'string' },
             { name: 'id', type: 'auto' }
         ],
 

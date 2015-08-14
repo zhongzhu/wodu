@@ -5,8 +5,6 @@ Ext.define('Wodu.util.Util', {
     mySecret: 'yyy',
 
     showNavBarTitle: function(theNavView, title) {
-      console.log('showNavBarTitle');
-
       var navBar = theNavView.getNavigationBar();
 
       if (theNavView.getInnerItems().length === navBar.backButtonStack.length) {

@@ -33,7 +33,6 @@ Ext.define('Wodu.controller.BooksReading', {
     onNaviViewShow: function(theBooksreadingNaviView, eOpts) {        
       var store = Ext.getStore('BooksReadingStore');   
       if (0 === store.getCount() && localStorage.myId) {
-          console.log('store is empty. going to load');
           store.on('load', 
             function(theStore, records, successful, operation, eOpts) {          
               Wodu.util.Util.showNavBarTitle(theBooksreadingNaviView, '我在读的书(' + theStore.getTotalCount() + ')');

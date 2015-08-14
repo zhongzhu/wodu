@@ -42,6 +42,11 @@ Ext.define('Wodu.controller.BookDetails', {
                 var store = Ext.getStore('BooksReadingStore');
                 store.remove(store.getById(response.id));
 
+                var toStore = Ext.getStore('BooksReadStore');
+                if (toStore.getCount() > 0) {
+                    toStore.insert(0, Ext.create('Wodu.model.ReadingInfo', response));
+                }
+
                 me.getReadingNaviView().pop();
             }).fail(function(response) {
                 Ext.Msg.alert('出错了', '无法改变成已读状态');
@@ -57,6 +62,11 @@ Ext.define('Wodu.controller.BookDetails', {
                 var store = Ext.getStore('BooksWishStore');
                 store.remove(store.getById(response.id));
 
+                var toStore = Ext.getStore('BooksReadingStore');
+                if (toStore.getCount() > 0) {
+                    toStore.insert(0, Ext.create('Wodu.model.ReadingInfo', response));
+                }
+
                 me.getWishNaviView().pop();
             }).fail(function(response) {
                 Ext.Msg.alert('出错了', '无法改变成正在读状态');
@@ -71,6 +81,11 @@ Ext.define('Wodu.controller.BookDetails', {
             }).done(function(response) {
                 var store = Ext.getStore('BooksReadStore');
                 store.remove(store.getById(response.id));
+
+                var toStore = Ext.getStore('BooksWishStore');
+                if (toStore.getCount() > 0) {
+                    toStore.insert(0, Ext.create('Wodu.model.ReadingInfo', response));
+                }
 
                 me.getReadNaviView().pop();
             }).fail(function(response) {
