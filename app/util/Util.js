@@ -14,6 +14,7 @@ Ext.define('Wodu.util.Util', {
       }             
     },
 
+    // oauth2 with douban
     authentication: function(callBack) {
       localStorage.myToken = 'xxx';
       localStorage.myId = 'yyy';
@@ -62,6 +63,23 @@ Ext.define('Wodu.util.Util', {
 
           store.load();
       }; 
+    },
+
+    // 获取某个用户的所有图书收藏信息
+    // GET  https://api.douban.com/v2/book/user/:name/collections?status=xx
+    getBookCollections: function(status, store, done, fail) {
+          store.on('load', done);
+
+          var proxy = store.getProxy();
+          proxy.setExtraParams({
+            fields: 'updated,id,book_id,book',
+            status: status,
+            apikey: this.myApikey
+          });
+
+          proxy.setUrl('https://api.douban.com/v2/book/user/' + localStorage.myId + '/collections');
+
+          store.load();
     },
 
     // 用户删除对某本图书的收藏

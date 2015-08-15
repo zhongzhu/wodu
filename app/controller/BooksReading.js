@@ -32,23 +32,17 @@ Ext.define('Wodu.controller.BooksReading', {
 
     onNaviViewShow: function(theBooksreadingNaviView, eOpts) {        
       var store = Ext.getStore('BooksReadingStore');   
-      if (0 === store.getCount() && localStorage.myId) {
-          store.on('load', 
-            function(theStore, records, successful, operation, eOpts) {          
-              Wodu.util.Util.showNavBarTitle(theBooksreadingNaviView, '我在读的书(' + theStore.getTotalCount() + ')');
-          });
 
-          var proxy = store.getProxy();
-          proxy.setExtraParams({
-            fields: 'updated,id,book_id,book',
-            status: 'reading',
-            apikey: Wodu.util.Util.myApikey
-          });
-
-          proxy.setUrl('https://api.douban.com/v2/book/user/' + localStorage.myId + '/collections');
-
-          store.load();
-      };
+      if (0 === store.getCount()) {
+        Wodu.util.Util.getBookCollections(
+          'reading', 
+          store, 
+          function(theStore, records, successful, operation, eOpts) { // done
+            Wodu.util.Util.showNavBarTitle(theBooksreadingNaviView, '我在读的书(' + theStore.getTotalCount() + ')');
+          },
+          null // fail
+        );
+      }
 
     },
 
