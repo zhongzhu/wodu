@@ -7,7 +7,7 @@ Ext.define('Wodu.view.BooksReadingNaviView', {
     ],
 
     config: {
-    	autoDestroy: false,
-        items: [{xtype: 'booksreadinglist'}]      
+      defaultBackButtonText: '返回',
+      items: [{xtype: 'booksreadinglist'}]      
     }
 });

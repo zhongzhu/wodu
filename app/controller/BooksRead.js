@@ -58,8 +58,9 @@ Ext.define('Wodu.controller.BooksRead', {
       var bookDetailsView = Ext.create('Wodu.view.BookDetails');
 
       bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));
-      bookDetailsView.down('#book_title').setData(record.data);
-      bookDetailsView.down('#bookdetails_actionbutton').setText('还想再看一遍');
+      bookDetailsView.down('#book_title').setRecord(record);
+      bookDetailsView.down('#bookdetails_actionbutton').setText('再看一遍');
+      bookDetailsView.down('#bookdetails_deletebutton').hide();
 
       this.getTheNaviView().push(bookDetailsView);
     }

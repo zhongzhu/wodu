@@ -30,32 +30,40 @@ Ext.define('Wodu.view.BookDetails', {
                           '<div style="margin-top:2px"><span style="color:#666;">出版商: </span>{book.publisher}</div>',
                           '<div style="margin-top:2px"><span style="color:#666;">出版:   </span>{book.pubdate}</div>',
                           '<div style="margin-top:2px"><span style="color:#666;">页数:   </span>{book.pages}</div>',
+                          '<div style="margin-top:2px"><span style="color:#666;">价格:   </span>{book.price}</div>',
                           '<div style="margin-top:4px"><span style="color:#666;">评价:   </span>{book.rating.average}/10</div>',
                         '</div>',
                     '</div>'
                 ].join('')                  
             },
-            {
-                xtype: 'hiddenfield',
-                name: 'id',
-                itemId: 'book_id'
-            },
+            // {
+            //     xtype: 'hiddenfield',
+            //     name: 'id',
+            //     itemId: 'book_id'
+            // },
             {
                 xtype: 'textareafield',
                 style: 'font-size: 13px; margin: 0 .5em 0 .5em;',
                 clearIcon: false,
                 readOnly: true,
-                height: '150px',
+                height: '170px',
                 name: 'summary',
                 placeHolder: '没有内容简介'
             },
            {
-                margin: '1em .5em 1.5em .5em',
+                margin: '1em .5em .5em .5em',
                 xtype: 'button',
                 itemId: 'bookdetails_actionbutton',
                 ui: 'confirm-round',
-                text: '看完了'
-            }
+                text: '已看完'
+            },
+           {
+                margin: '0 .5em 0 .5em',
+                xtype: 'button',
+                itemId: 'bookdetails_deletebutton',
+                ui: 'decline-round',
+                text: '不看了'
+            }            
         ]
     }
 

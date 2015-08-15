@@ -14,16 +14,102 @@ Ext.define('Wodu.util.Util', {
       }             
     },
 
-    oauth2Config: function() {
-      return {
-        auth_url: 'https://www.douban.com/service/auth2/auth',  // required
-        response_type: 'code',      // required - "code"/"token"
-        token_url: 'https://www.douban.com/service/auth2/token',  // required if response_type = 'code'
-        logout_url: '',         // recommended if available
-        client_id: this.myApikey,  // required
-        client_secret: this.mySecret,      // required if response_type = 'code'
-        redirect_uri: 'http://localhost',       // required - some dummy url
-        other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
-      };
+    authentication: function(callBack) {
+      localStorage.myToken = 'xxx';
+      localStorage.myId = 'yyy';
+
+      if (localStorage.myToken === undefined) {
+        $.oauth2(
+          {
+            auth_url: 'https://www.douban.com/service/auth2/auth',
+            response_type: 'code',      // required - "code"/"token"
+            token_url: 'https://www.douban.com/service/auth2/token',  // required if response_type = 'code'
+            logout_url: '',  // recommended if available
+            client_id: this.myApikey,
+            client_secret: this.mySecret, // required if response_type = 'code'
+            redirect_uri: 'http://localhost', // required - some dummy url
+            other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
+          }, 
+
+          function(token, response) {
+            localStorage.myToken = token;
+            localStorage.myId = response.douban_user_id;
+            localStorage.myRefreshToken = response.refresh_token;
+            localStorage.myName = response.douban_user_name;
+
+            callBack();
+          }, 
+
+          function(error, response){
+            localStorage.removeItem('myToken');         
+        });  
+      } else {
+        callBack();
+      }
+    },
+
+    // 搜索图书
+    // GET  https://api.douban.com/v2/book/search?q=searchText
+    searchForBooks: function(searchText, store) {
+      if (localStorage.myId) {
+          var proxy = store.getProxy();
+          proxy.setExtraParams({
+            q: searchText,
+            apikey: this.myApikey
+          });
+
+          proxy.setUrl('https://api.douban.com/v2/book/search');
+
+          store.load();
+      }; 
+    },
+
+    // 用户删除对某本图书的收藏
+    // DELETE  https://api.douban.com/v2/book/:id/collection    
+    deleteBookFromCollection: function(bookId, done, fail) {
+      if (localStorage.myToken === undefined) {
+        fail('');
+      }      
+
+      $.ajax({
+          url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
+          method: 'DELETE',
+          headers: {Authorization: 'Bearer ' + localStorage.myToken}
+      }).done(done)
+      .fail(fail);
+    },
+
+    // 用户收藏某本图书
+    // POST  https://api.douban.com/v2/book/:id/collection&status=wish
+    addBookToCollection: function(bookId, done, fail) {
+      if (localStorage.myToken === undefined) {
+        fail('');
+      }      
+
+      $.ajax({
+          url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
+          method: 'POST',
+          data: 'status=wish',
+          headers: {Authorization: 'Bearer ' + localStorage.myToken}
+      })
+      .done(done)
+      .fail(fail);
+    },
+
+    // 用户修改对某本图书的收藏
+    // PUT  https://api.douban.com/v2/book/:id/collection?status=xxx
+    changeBookCollectionStatus: function(bookId, status, done, fail) {
+      if (localStorage.myToken === undefined) {
+        fail('');
+      }   
+
+      $.ajax({
+          url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
+          method: 'PUT',
+          data: 'status=' + status,
+          headers: {Authorization: 'Bearer ' + localStorage.myToken}
+      }).done(done)
+      .fail(fail);
     }
+
 });

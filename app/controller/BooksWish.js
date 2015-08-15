@@ -24,6 +24,12 @@ Ext.define('Wodu.controller.BooksWish', {
         } 
     },
 
+    onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
+      if (oldValue.isXType('bookdetails')) {
+        Wodu.util.Util.showNavBarTitle(theNaviView, '我想读的书(' + Ext.getStore('BooksWishStore').getTotalCount() + ')');
+      }
+    },
+
     onNaviViewShow: function(theNaviView, eOpts) {        
       var store = Ext.getStore('BooksWishStore');   
       if (0 === store.getCount() && localStorage.myId) {
@@ -47,20 +53,13 @@ Ext.define('Wodu.controller.BooksWish', {
     },
 
     onBooksWishlistItemTap: function(theList, index, target, record, e, eOpts) {
-      console.log('onBooksWishlistItemTap');
       var bookDetailsView = Ext.create('Wodu.view.BookDetails');
 
       bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));
-      bookDetailsView.down('#book_title').setData(record.data);
+      bookDetailsView.down('#book_title').setRecord(record);
       bookDetailsView.down('#bookdetails_actionbutton').setText('开始看');
 
       this.getTheNaviView().push(bookDetailsView);
-    },
-
-    onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
-      if (oldValue.isXType('bookdetails')) {
-        Wodu.util.Util.showNavBarTitle(theNaviView, '我想读的书(' + Ext.getStore('BooksWishStore').getTotalCount() + ')');
-      }
-    }    
+    }
 
 });

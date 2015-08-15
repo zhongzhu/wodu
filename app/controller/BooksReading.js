@@ -53,11 +53,12 @@ Ext.define('Wodu.controller.BooksReading', {
     },
 
     onBooksReadinglistItemTap: function(theList, index, target, record, e, eOpts) {
+      console.log(record);
       var bookDetailsView = Ext.create('Wodu.view.BookDetails');
 
       bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));
-      bookDetailsView.down('#book_title').setData(record.data);
-      bookDetailsView.down('#bookdetails_actionbutton').setText('看完了');
+      bookDetailsView.down('#book_title').setRecord(record);
+      bookDetailsView.down('#bookdetails_actionbutton').setText('已看完');
 
       this.getTheNaviView().push(bookDetailsView);
     }

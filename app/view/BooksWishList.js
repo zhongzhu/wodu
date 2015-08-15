@@ -16,7 +16,8 @@ Ext.define('Wodu.view.BooksWishList', {
       plugins: [{
         xclass: 'Ext.plugin.ListPaging',
         autoPaging: true,
-        loadMoreText: '加载更多...'
+        loadMoreText: '加载更多...',
+        noMoreRecordsText: '到头啦'
       }],          
 
       itemTpl: [

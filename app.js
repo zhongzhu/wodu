@@ -19,7 +19,7 @@ Ext.application({
     ],
 
     views: [
-        'Main', 'BooksReadingNaviView', 'BooksWishNaviView', 'BooksReadNaviView', 'SearchBooksForm'
+        'Main', 'BooksReadingNaviView', 'BooksWishNaviView', 'BooksReadNaviView', 'SearchBooksNaviView'
     ],
 
     controllers: [
@@ -48,33 +48,16 @@ Ext.application({
         '1496x2048': 'resources/startup/1496x2048.png'
     },
 
-   authentication: function() {
-      $.oauth2(
-        Wodu.util.Util.oauth2Config(), 
-        function(token, response) {
-          localStorage.myToken = token;
-          localStorage.myId = response.douban_user_id;
-          localStorage.myRefreshToken = response.refresh_token;
-          localStorage.myName = response.douban_user_name;
-
-          Ext.Viewport.add(Ext.create('Wodu.view.Main'));
-        }, function(error, response){
-          localStorage.removeItem('myToken');         
-      });
-    },    
+    letsStartTheMainGUI: function() {
+        // Initialize the main view
+        Ext.Viewport.add(Ext.create('Wodu.view.Main'));
+    },  
 
     launch: function() {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
-    
-        // localStorage.myToken = 'xxx';
-        // localStorage.myId = 'yyy';
         
-        if (localStorage.myToken === undefined) {
-            this.authentication();
-        } else {
-            Ext.Viewport.add(Ext.create('Wodu.view.Main'));
-        }   
+        Wodu.util.Util.authentication(this.letsStartTheMainGUI);
 
         // Initialize the main view
         // Ext.Viewport.add(Ext.create('Wodu.view.Main'));

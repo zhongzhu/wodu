@@ -3,34 +3,62 @@ Ext.define('Wodu.controller.SearchBooks', {
 
     config: {
         refs: {
-            searchBooksForm: 'searchbooksform',
-            searchBooksList: 'searchbooksform #searchbookslist'
+          theNaviView: 'searchbooksnaviview'
         },
 
         control: {
-            'searchbooksform toolbar searchfield': {
-                action: 'searchAction'
+            theNaviView: {
+              initialize: 'onTheNaviViewInitialize',
+              activeitemchange: 'onNaviViewActiveItemChange'
+            },
+
+            'searchbooksnaviview searchfield': {
+              action: 'searchAction'
+            },
+            
+            'searchbookslist': {
+              itemtap: 'onListItemTap'
             }
         }            
     },
 
+    onTheNaviViewInitialize: function(theNaviView, eOpts) {
+      theNaviView.getNavigationBar().leftBox.setCentered(true);
+    },
+
+    onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
+      if (oldValue.isXType('searchbookslist')) {
+        theNaviView.down('searchfield').hide();
+        theNaviView.getNavigationBar().leftBox.setCentered(false);
+      } else if (oldValue.isXType('bookdetails')) {
+        theNaviView.down('searchfield').show();
+        theNaviView.getNavigationBar().leftBox.setCentered(true);
+      }
+    },
+
     searchAction: function(theSearchField, e, eOpts) {
       var searchText = theSearchField.getValue();
-
       var store = Ext.getStore('SearchBooksStore');   
-      // store.removeAll();
 
-      if (localStorage.myId) {
-          var proxy = store.getProxy();
-          proxy.setExtraParams({
-            q: searchText,
-            apikey: Wodu.util.Util.myApikey
-          });
+      Wodu.util.Util.searchForBooks(searchText, store);       
+    },
 
-          proxy.setUrl('https://api.douban.com/v2/book/search');
+    onListItemTap: function(theList, index, target, record, e, eOpts) {
+      var bookDetailsView = Ext.create('Wodu.view.BookDetails');
 
-          store.load();
-      };        
-    }
+      bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data));
+
+      var newRecord = Ext.create('Wodu.model.ReadingInfo', {
+        updated: '',
+        book_id: record.data.id,
+        book: record.data
+      });
+
+      bookDetailsView.down('#book_title').setRecord(newRecord);
+      bookDetailsView.down('#bookdetails_actionbutton').setText('想看这本书');
+      bookDetailsView.down('#bookdetails_deletebutton').hide();
+
+      this.getTheNaviView().push(bookDetailsView);
+    }    
 
 });

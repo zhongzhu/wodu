@@ -3,6 +3,8 @@ Ext.define('Wodu.view.Main', {
     xtype: 'main',
     
     config: {
+        style: 'font-family:Helvetica,sans-serif;',
+
         tabBar: {
             docked: 'bottom'
         },
@@ -27,7 +29,7 @@ Ext.define('Wodu.view.Main', {
             },
             
             {
-                xtype: 'searchbooksform',
+                xtype: 'searchbooksnaviview',
                 title: '新书',
                 iconCls: 'search'
             }
