@@ -19,11 +19,11 @@ Ext.application({
     ],
 
     views: [
-        'Main', 'BooksReadingNaviView', 'BooksWishNaviView', 'BooksReadNaviView', 'SearchBooksNaviView'
+        'Login', 'Main', 'BooksReadingNaviView', 'BooksWishNaviView', 'BooksReadNaviView', 'SearchBooksNaviView'
     ],
 
     controllers: [
-        'Main', 'BooksReading', 'BooksWish', 'BooksRead', 'BookDetails', 'SearchBooks'
+        'Login', 'Main', 'BooksReading', 'BooksWish', 'BooksRead', 'BookDetails', 'SearchBooks'
     ],    
 
     stores: [
@@ -49,16 +49,22 @@ Ext.application({
     },
 
     letsStartTheMainGUI: function() {
-        // Initialize the main view
         Ext.Viewport.add(Ext.create('Wodu.view.Main'));
     },  
+
+    letUserToLogin: function() {
+      Ext.Viewport.add(Ext.create('Wodu.view.Login'));
+    },
 
     launch: function() {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
-        
-        Wodu.util.Util.authentication(this.letsStartTheMainGUI);
 
+        Wodu.util.Util.checkLogin(
+          this.letsStartTheMainGUI, // success
+          this.letUserToLogin // failure
+        );
+        
         // Initialize the main view
         // Ext.Viewport.add(Ext.create('Wodu.view.Main'));
     },

@@ -1,8 +1,8 @@
 Ext.define('Wodu.util.Util', {
     singleton: true,
 
-    myApikey: 'xxx',
-    mySecret: 'yyy',
+    myApikey: 'xx',
+    mySecret: 'yy',
 
     showNavBarTitle: function(theNavView, title) {
       var navBar = theNavView.getNavigationBar();
@@ -14,10 +14,18 @@ Ext.define('Wodu.util.Util', {
       }             
     },
 
+    checkLogin: function(success, failure) {
+      if (localStorage.myToken === undefined) {
+        failure();
+      } else {
+        success();
+      }
+    },
+
     // oauth2 with douban
-    authentication: function(callBack) {
-      localStorage.myToken = 'xxx';
-      localStorage.myId = 'yyy';
+    authentication: function(success, failure) {
+      // localStorage.myToken = 'xx';
+      // localStorage.myId = 'yy';
 
       if (localStorage.myToken === undefined) {
         $.oauth2(
@@ -32,20 +40,21 @@ Ext.define('Wodu.util.Util', {
             other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
           }, 
 
-          function(token, response) {
+          function(token, response) { // success
             localStorage.myToken = token;
             localStorage.myId = response.douban_user_id;
             localStorage.myRefreshToken = response.refresh_token;
             localStorage.myName = response.douban_user_name;
 
-            callBack();
+            success();
           }, 
 
-          function(error, response){
-            localStorage.removeItem('myToken');         
+          function(error, response){ // failure
+            localStorage.removeItem('myToken');   
+            failure();      
         });  
       } else {
-        callBack();
+        success();
       }
     },
 

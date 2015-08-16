@@ -46,7 +46,6 @@ Ext.define('Wodu.controller.BooksRead', {
     },
 
     onlistItemTap: function(theList, index, target, record, e, eOpts) {
-      console.log('onBooksReadinglistItemTap');
       var bookDetailsView = Ext.create('Wodu.view.BookDetails');
 
       bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));
