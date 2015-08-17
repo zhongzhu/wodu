@@ -1,8 +1,8 @@
 Ext.define('Wodu.util.Util', {
     singleton: true,
 
-    myApikey: 'xx',
-    mySecret: 'yy',
+    myApikey: 'xxx',
+    mySecret: 'yyy',
 
     showNavBarTitle: function(theNavView, title) {
       var navBar = theNavView.getNavigationBar();
@@ -24,6 +24,7 @@ Ext.define('Wodu.util.Util', {
 
     // oauth2 with douban
     authentication: function(success, failure) {
+      // below 2 lines are used for debuging purpose
       // localStorage.myToken = 'xx';
       // localStorage.myId = 'yy';
 
@@ -36,7 +37,7 @@ Ext.define('Wodu.util.Util', {
             logout_url: '',  // recommended if available
             client_id: this.myApikey,
             client_secret: this.mySecret, // required if response_type = 'code'
-            redirect_uri: 'http://localhost', // required - some dummy url
+            redirect_uri: 'http://aikanshu.sinaapp.com/', // required - some dummy url
             other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
           }, 
 
@@ -128,7 +129,7 @@ Ext.define('Wodu.util.Util', {
     changeBookCollectionStatus: function(bookId, status, done, fail) {
       if (localStorage.myToken === undefined) {
         fail('');
-      }   
+      }
 
       $.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',

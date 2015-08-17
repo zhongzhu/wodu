@@ -48,21 +48,21 @@ Ext.application({
         '1496x2048': 'resources/startup/1496x2048.png'
     },
 
-    letsStartTheMainGUI: function() {
-        Ext.Viewport.add(Ext.create('Wodu.view.Main'));
-    },  
-
-    letUserToLogin: function() {
-      Ext.Viewport.add(Ext.create('Wodu.view.Login'));
-    },
-
     launch: function() {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
+        var login = Ext.create('Wodu.view.Login');
+        var main = Ext.create('Wodu.view.Main');
+        Ext.Viewport.add([login, main]);
+
         Wodu.util.Util.checkLogin(
-          this.letsStartTheMainGUI, // success
-          this.letUserToLogin // failure
+          function() { // success
+            Ext.Viewport.animateActiveItem(main, {type: 'slide', direction: 'left'});
+          },
+
+          function() { // failure
+          }
         );
         
         // Initialize the main view

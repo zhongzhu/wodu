@@ -7,7 +7,8 @@ Ext.define('Wodu.controller.BookDetails', {
 
     config: {
         refs: {
-            bookDetails: 'bookdetails'
+            bookDetails: 'bookdetails',
+            loginPanel: 'loginpanel'
         },
 
         control: {
@@ -41,8 +42,15 @@ Ext.define('Wodu.controller.BookDetails', {
 
           theNaviView.pop();
         },
+
         function(response) { // fail
-          Ext.Msg.alert('出错了', '无法改变成想读状态');
+          if (respnose.code === 106) { // access_token_has_expired
+            var loginPanel = me.getLoginPanel();
+            Ext.Msg.alert('无法删除这本书', '你的豆瓣网登录信息已超时，请重新登录。');
+            Ext.Viewport.animateActiveItem(loginPanel, {type: 'slide', direction: 'left'});
+          } else {
+            Ext.Msg.alert('出错了', '无法删除这本书');
+          }
         }          
       );          
                       
@@ -71,8 +79,15 @@ Ext.define('Wodu.controller.BookDetails', {
 
                 theButton.up('navigationview').pop();
               },
+
               function(response) { // fail
-                Ext.Msg.alert('出错了', '无法改变成已读状态');
+                if (respnose.code === 106) { // access_token_has_expired
+                  var loginPanel = me.getLoginPanel();
+                  Ext.Msg.alert('无法改变成想读状态', '你的豆瓣网登录信息已超时，请重新登录。');
+                  Ext.Viewport.animateActiveItem(loginPanel, {type: 'slide', direction: 'left'});
+                } else {
+                  Ext.Msg.alert('出错了', '无法改变成已读状态');
+                }
               }
             );
 
@@ -91,8 +106,15 @@ Ext.define('Wodu.controller.BookDetails', {
 
                 theButton.up('navigationview').pop();
               },
+
               function(response) {
-                Ext.Msg.alert('出错了', '无法改变成正在读状态');
+                if (respnose.code === 106) { // access_token_has_expired
+                  var loginPanel = me.getLoginPanel();
+                  Ext.Msg.alert('无法改变成想读状态', '你的豆瓣网登录信息已超时，请重新登录。');
+                  Ext.Viewport.animateActiveItem(loginPanel, {type: 'slide', direction: 'left'});
+                } else {
+                  Ext.Msg.alert('出错了', '无法改变成正在读状态');
+                }
               }                  
             );      
 
@@ -111,8 +133,15 @@ Ext.define('Wodu.controller.BookDetails', {
 
                 theButton.up('navigationview').pop();
               },
+              
               function(response) {
-                Ext.Msg.alert('出错了', '无法改变成想读状态');
+                if (respnose.code === 106) { // access_token_has_expired
+                  var loginPanel = me.getLoginPanel();
+                  Ext.Msg.alert('无法改变成想读状态', '你的豆瓣网登录信息已超时，请重新登录。');
+                  Ext.Viewport.animateActiveItem(loginPanel, {type: 'slide', direction: 'left'});
+                } else {
+                  Ext.Msg.alert('出错了', '无法改变成想读状态');
+                }
               }                            
             );        
                  
@@ -128,8 +157,15 @@ Ext.define('Wodu.controller.BookDetails', {
 
                 theButton.up('navigationview').pop();
               },
+
               function(response) { // fail
-                Ext.Msg.alert('出错了', '无法改变成想读状态');
+                if (respnose.code === 106) { // access_token_has_expired
+                  var loginPanel = me.getLoginPanel();
+                  Ext.Msg.alert('无法改变成想读状态', '你的豆瓣网登录信息已超时，请重新登录。');
+                  Ext.Viewport.animateActiveItem(loginPanel, {type: 'slide', direction: 'left'});
+                } else {
+                  Ext.Msg.alert('出错了', '无法改变成想读状态');
+                }
               }                      
             );             
         }
