@@ -1,3 +1,6 @@
+# not sure about this folder
+android/
+
 # build directory for Sencha (ExtJS) projects
 build/
 release/
