@@ -1,7 +1,7 @@
 # 爱看书
 豆瓣读书“我读” Android客户端，用来记录自己在读/想读/读过的书。
 
-![](screenshots/1.png)  ![](screenshots/2.png)  ![](screenshots/3.png)
+![](screenshots/aikanshu.png)
 
 
 ## 功能
