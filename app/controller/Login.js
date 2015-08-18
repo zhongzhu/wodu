@@ -3,8 +3,7 @@ Ext.define('Wodu.controller.Login', {
 
     config: {
         refs: {
-            loginPanel: 'loginpanel',
-            mainPanel: 'main'
+            loginPanel: 'loginpanel'
         },
 
         control: {
@@ -18,13 +17,13 @@ Ext.define('Wodu.controller.Login', {
         var me = this;
         Wodu.util.Util.authentication(
             function() { // success
-                var mainPanel = me.getMainPanel();
-                Ext.Viewport.animateActiveItem(mainPanel, {type: 'slide', direction: 'left'});
+                var main = Ext.create('Wodu.view.Main');
+                Ext.Viewport.add(main);
+                Ext.Viewport.animateActiveItem(main, {type: 'slide', direction: 'left'});
             },
+
             function() { // failure
-                var loginPanel = me.getLoginPanel();
                 Ext.Msg.alert('出错了', '无法登陆到豆瓣网');
-                Ext.Viewport.animateActiveItem(loginPanel, {type: 'slide', direction: 'left'});
             }
         );
     }

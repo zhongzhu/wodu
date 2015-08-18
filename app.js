@@ -53,20 +53,18 @@ Ext.application({
         Ext.fly('appLoadingIndicator').destroy();
 
         var login = Ext.create('Wodu.view.Login');
-        var main = Ext.create('Wodu.view.Main');
-        Ext.Viewport.add([login, main]);
-
         Wodu.util.Util.checkLogin(
           function() { // success
+            var main = Ext.create('Wodu.view.Main');
+            Ext.Viewport.add([login, main]);
             Ext.Viewport.animateActiveItem(main, {type: 'slide', direction: 'left'});
           },
 
           function() { // failure
+            Ext.Viewport.add(login);
           }
         );
-        
-        // Initialize the main view
-        // Ext.Viewport.add(Ext.create('Wodu.view.Main'));
+
     },
 
     onUpdated: function() {

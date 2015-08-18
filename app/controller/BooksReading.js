@@ -30,7 +30,7 @@ Ext.define('Wodu.controller.BooksReading', {
       }
     },
 
-    onNaviViewShow: function(theBooksreadingNaviView, eOpts) {        
+    onNaviViewShow: function(theBooksreadingNaviView, eOpts) {    
       var store = Ext.getStore('BooksReadingStore');   
 
       if (0 === store.getCount()) {

@@ -1,8 +1,8 @@
 Ext.define('Wodu.util.Util', {
     singleton: true,
 
-    myApikey: 'xxx',
-    mySecret: 'yyy',
+    myApikey: '0d8bbcbe916a9aec28a3363bb43fd0c4',
+    mySecret: '7d5e2e16976b6d4a',
 
     showNavBarTitle: function(theNavView, title) {
       var navBar = theNavView.getNavigationBar();
@@ -24,10 +24,6 @@ Ext.define('Wodu.util.Util', {
 
     // oauth2 with douban
     authentication: function(success, failure) {
-      // below 2 lines are used for debuging purpose
-      // localStorage.myToken = 'xx';
-      // localStorage.myId = 'yy';
-
       if (localStorage.myToken === undefined) {
         $.oauth2(
           {
@@ -65,11 +61,13 @@ Ext.define('Wodu.util.Util', {
       if (localStorage.myId) {
           var proxy = store.getProxy();
           proxy.setExtraParams({
+            fields: 'title,image,author,summary,publisher,pubdate,isbn13,pages,price,id,rating,images',
             q: searchText,
             apikey: this.myApikey
           });
 
           proxy.setUrl('https://api.douban.com/v2/book/search');
+          proxy.setHeaders({Authorization: 'Bearer ' + localStorage.myToken});
 
           store.load();
       }; 
@@ -112,7 +110,7 @@ Ext.define('Wodu.util.Util', {
     addBookToCollection: function(bookId, done, fail) {
       if (localStorage.myToken === undefined) {
         fail('');
-      }      
+      }
 
       $.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
