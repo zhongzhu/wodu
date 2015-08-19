@@ -33,7 +33,7 @@ Ext.define('Wodu.util.Util', {
             logout_url: '',  // recommended if available
             client_id: this.myApikey,
             client_secret: this.mySecret, // required if response_type = 'code'
-            redirect_uri: 'http://aikanshu.sinaapp.com/', // required - some dummy url
+            redirect_uri: 'http://aikanshu.sinaapp.com', // required - some dummy url
             other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
           }, 
 
