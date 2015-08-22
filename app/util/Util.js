@@ -1,8 +1,8 @@
 Ext.define('Wodu.util.Util', {
     singleton: true,
 
-    myApikey: '0d8bbcbe916a9aec28a3363bb43fd0c4',
-    mySecret: '7d5e2e16976b6d4a',
+    myApikey: 'xxx', // put your douban apikey here
+    mySecret: 'yyy', // put your douban secret here
 
     showNavBarTitle: function(theNavView, title) {
       var navBar = theNavView.getNavigationBar();
