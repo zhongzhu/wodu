@@ -15,8 +15,8 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <allow-navigation href="*" />
-    <allow-navigation href="*" />    
-     <preference name="Orientation" value="portrait" />
+    <allow-navigation href="*" />
+    <preference name="Orientation" value="portrait" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
@@ -24,4 +24,6 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    <plugin name="phonegap-plugin-barcodescanner" spec="^4.0.1" />
+    <plugin name="org.apache.cordova.inappbrowser" spec="^0.6.0" />
 </widget>
