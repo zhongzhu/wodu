@@ -13,8 +13,13 @@ Ext.define('Wodu.view.SearchBooksNaviView', {
           docked: 'top',
           items: [
               {
-                  xtype: 'searchfield',
-                  placeHolder: '书名，作者，ISBN'
+                xtype: 'searchfield',
+                placeHolder: '书名，作者，ISBN'
+              },
+              {
+                xtype: 'button',
+                itemId: 'scanButton',
+                iconCls: 'camera'
               }
           ]
         },

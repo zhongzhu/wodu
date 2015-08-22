@@ -3,7 +3,8 @@ Ext.define('Wodu.controller.SearchBooks', {
 
     config: {
         refs: {
-          theNaviView: 'searchbooksnaviview'
+          theNaviView: 'searchbooksnaviview',
+          theSearchField: 'searchbooksnaviview searchfield'
         },
 
         control: {
@@ -12,14 +13,33 @@ Ext.define('Wodu.controller.SearchBooks', {
               activeitemchange: 'onNaviViewActiveItemChange'
             },
 
-            'searchbooksnaviview searchfield': {
+            theSearchField: {
               action: 'searchAction'
             },
             
             'searchbookslist': {
               itemtap: 'onListItemTap'
+            },
+
+            'searchbooksnaviview #scanButton': {
+              tap: 'scanBarCode'
             }
         }            
+    },
+
+    scanBarCode: function(theButton, e, eOpts) {
+      var me = this;
+
+      cordova.plugins.barcodeScanner.scan(
+        function (result) {
+          var theSearchField = me.getTheSearchField();
+          theSearchField.setValue(result.text);
+          me.searchAction(theSearchField);
+        }, 
+        function (error) {
+          Ext.Msg.alert('扫描出错了', error);
+        }
+      );      
     },
 
     onTheNaviViewInitialize: function(theNaviView, eOpts) {
@@ -29,9 +49,11 @@ Ext.define('Wodu.controller.SearchBooks', {
     onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
       if (oldValue.isXType('searchbookslist')) {
         theNaviView.down('searchfield').hide();
+        theNaviView.down('#scanButton').hide();
         theNaviView.getNavigationBar().leftBox.setCentered(false);
       } else if (oldValue.isXType('bookdetails')) {
         theNaviView.down('searchfield').show();
+        theNaviView.down('#scanButton').show();
         theNaviView.getNavigationBar().leftBox.setCentered(true);
       }
     },

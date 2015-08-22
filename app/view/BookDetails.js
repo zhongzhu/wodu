@@ -36,11 +36,6 @@ Ext.define('Wodu.view.BookDetails', {
                     '</div>'
                 ].join('')                  
             },
-            // {
-            //     xtype: 'hiddenfield',
-            //     name: 'id',
-            //     itemId: 'book_id'
-            // },
             {
                 xtype: 'textareafield',
                 style: 'font-size: 13px; margin: 0 .5em 0 .5em;',

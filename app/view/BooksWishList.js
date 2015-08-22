@@ -4,7 +4,8 @@ Ext.define('Wodu.view.BooksWishList', {
 
     requires: [
         'Ext.XTemplate',
-        'Ext.plugin.ListPaging'
+        'Ext.plugin.ListPaging',
+        'Ext.plugin.PullRefresh'
     ],
 
     config: {
