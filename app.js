@@ -57,7 +57,8 @@ Ext.application({
           function() { // success
             var main = Ext.create('Wodu.view.Main');
             Ext.Viewport.add([login, main]);
-            Ext.Viewport.animateActiveItem(main, {type: 'slide', direction: 'left'});
+            // activeIndex: 0, login; 1, main
+            Ext.Viewport.animateActiveItem(1, {type: 'slide', direction: 'left'});
           },
 
           function() { // failure

@@ -13,12 +13,19 @@ Ext.define('Wodu.view.BooksReadList', {
       itemHeight: '135px',
       variableHeights: false,
 
-      plugins: [{
-        xclass: 'Ext.plugin.ListPaging',
-        autoPaging: true,
-        loadMoreText: '加载更多...',
-        noMoreRecordsText: '到头啦'
-      }],                
+      plugins: [
+        {
+          xclass: 'Ext.plugin.ListPaging',
+          autoPaging: true,
+          loadMoreText: '加载更多...',
+          noMoreRecordsText: '到头啦'
+        },
+        {
+            xclass: 'Ext.plugin.PullRefresh',
+            pullText: '放手就可以更新...',
+            lastUpdatedText: '上次更新时间：'
+        }
+      ],                
 
       itemTpl: [
         '<div class="img" style="background-image:url({book.image}); display:inline-block; width: 90px; height: 113px; background-repeat: no-repeat;background-size:100%;background-position:50%; float:left; margin-right:10px;"></div>',

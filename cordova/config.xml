@@ -18,6 +18,7 @@
     <allow-intent href="geo:*" />
     <allow-navigation href="*" />
     <allow-navigation href="*" />    
+     <preference name="Orientation" value="portrait" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>

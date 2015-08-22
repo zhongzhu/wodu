@@ -22,6 +22,18 @@ Ext.define('Wodu.util.Util', {
       }
     },
 
+    // check access_token_has_expired from ajax response
+    checkIfAccessTokenExpired: function(respnose, callBackIfNotExpired) {
+      var resp = response.responseJSON;
+      if (resp.code === 106) { // access_token_has_expired
+        Ext.Msg.alert('出错啦', '你的豆瓣网登录信息已超时，请重新登录。');
+        // activeItem: 0, Index; 1, main
+        Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
+      } else {
+        callBackIfNotExpired(respnose);
+      }
+    },
+
     // oauth2 with douban
     authentication: function(success, failure) {
       if (localStorage.myToken === undefined) {
@@ -95,14 +107,16 @@ Ext.define('Wodu.util.Util', {
     deleteBookFromCollection: function(bookId, done, fail) {
       if (localStorage.myToken === undefined) {
         fail('');
-      }      
+      }
 
       $.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
           method: 'DELETE',
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
       }).done(done)
-      .fail(fail);
+      .fail(function(response) {
+        this.checkIfAccessTokenExpired(response, fail);
+      });
     },
 
     // 用户收藏某本图书
@@ -119,7 +133,9 @@ Ext.define('Wodu.util.Util', {
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
       })
       .done(done)
-      .fail(fail);
+      .fail(function(response) {
+        this.checkIfAccessTokenExpired(response, fail);
+      });
     },
 
     // 用户修改对某本图书的收藏
@@ -135,7 +151,9 @@ Ext.define('Wodu.util.Util', {
           data: 'status=' + status,
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
       }).done(done)
-      .fail(fail);
+      .fail(function(response) {
+        this.checkIfAccessTokenExpired(response, fail);
+      });
     }
 
 });
