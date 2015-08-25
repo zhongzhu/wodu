@@ -9,7 +9,6 @@ Ext.define('Wodu.controller.SearchBooks', {
 
         control: {
             theNaviView: {
-              initialize: 'onTheNaviViewInitialize',
               activeitemchange: 'onNaviViewActiveItemChange'
             },
 
@@ -42,19 +41,13 @@ Ext.define('Wodu.controller.SearchBooks', {
       );      
     },
 
-    onTheNaviViewInitialize: function(theNaviView, eOpts) {
-      theNaviView.getNavigationBar().leftBox.setCentered(true);
-    },
-
     onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
       if (oldValue.isXType('searchbookslist')) {
         theNaviView.down('searchfield').hide();
         theNaviView.down('#scanButton').hide();
-        theNaviView.getNavigationBar().leftBox.setCentered(false);
       } else if (oldValue.isXType('bookdetails')) {
         theNaviView.down('searchfield').show();
         theNaviView.down('#scanButton').show();
-        theNaviView.getNavigationBar().leftBox.setCentered(true);
       }
     },
 
