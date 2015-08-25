@@ -23,14 +23,20 @@ Ext.define('Wodu.util.Util', {
     },
 
     // check access_token_has_expired from ajax response
-    checkIfAccessTokenExpired: function(respnose, callBackIfNotExpired) {
-      var resp = response.responseJSON;
+    checkIfAccessTokenExpired: function(response, callBackIfNotExpired) {
+      console.log(response);
+
+      var resp = Ext.JSON.decode(response.responseText);
       if (resp.code === 106) { // access_token_has_expired
         Ext.Msg.alert('出错啦', '你的豆瓣网登录信息已超时，请重新登录。');
         // activeItem: 0, Index; 1, main
         Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
       } else {
-        callBackIfNotExpired(respnose);
+        if (callBackIfNotExpired === undefined) {
+          Ext.Msg.alert('出错啦',resp.msg);
+        } else {
+          callBackIfNotExpired(response);
+        }
       }
     },
 
@@ -70,6 +76,8 @@ Ext.define('Wodu.util.Util', {
     // 搜索图书
     // GET  https://api.douban.com/v2/book/search?q=searchText
     searchForBooks: function(searchText, store) {
+      var me = this;
+
       if (localStorage.myId) {
           var proxy = store.getProxy();
           proxy.setExtraParams({
@@ -80,9 +88,12 @@ Ext.define('Wodu.util.Util', {
 
           proxy.setUrl('https://api.douban.com/v2/book/search');
           proxy.setHeaders({Authorization: 'Bearer ' + localStorage.myToken});
+          proxy.on('exception', function(theProxy, response, operation, eOpts) {
+            me.checkIfAccessTokenExpired(response);
+          });
 
           store.load();
-      }; 
+      }
     },
 
     // 获取某个用户的所有图书收藏信息
