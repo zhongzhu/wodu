@@ -25,10 +25,11 @@ Ext.define('Wodu.util.Util', {
     // check access_token_has_expired from ajax response
     checkIfAccessTokenExpired: function(response, callBackIfNotExpired) {
       console.log(response);
-
       var resp = Ext.JSON.decode(response.responseText);
-      if (resp.code === 106) { // access_token_has_expired
-        Ext.Msg.alert('出错啦', '你的豆瓣网登录信息已超时，请重新登录。');
+      if (resp.code === 106 || resp.code === 103) { 
+        // access_token_has_expired, 106;
+        // invalid_access_token: undefined, 103
+        Ext.Msg.alert('出错啦', '你的豆瓣网登录已超时，请重新登录。');
         // activeItem: 0, Index; 1, main
         Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
       } else {
