@@ -24,7 +24,6 @@ Ext.define('Wodu.util.Util', {
 
     // check access_token_has_expired from ajax response
     checkIfAccessTokenExpired: function(response, callBackIfNotExpired) {
-      console.log(response);
       var resp = Ext.JSON.decode(response.responseText);
       if (resp.code === 106 || resp.code === 103) { 
         // access_token_has_expired, 106;
@@ -78,6 +77,7 @@ Ext.define('Wodu.util.Util', {
     // GET  https://api.douban.com/v2/book/search?q=searchText
     searchForBooks: function(searchText, store) {
       var me = this;
+      store.removeAll(true);
 
       if (localStorage.myId) {
           var proxy = store.getProxy();

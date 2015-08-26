@@ -126,8 +126,6 @@ Ext.define('Wodu.controller.BookDetails', {
             Wodu.util.Util.addBookToCollection(
               bookId,
               function(response) { // done
-                console.log('done');
-                console.log(response);
                 var toStore = Ext.getStore('BooksWishStore');
                 if (toStore.getCount() > 0) {
                     toStore.insert(0, Ext.create('Wodu.model.ReadingInfo', response));
