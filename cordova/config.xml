@@ -26,4 +26,5 @@
     </platform>
     <plugin name="phonegap-plugin-barcodescanner" spec="^4.0.1" />
     <plugin name="org.apache.cordova.inappbrowser" spec="^0.6.0" />
+    <plugin name="cordova-plugin-inappbrowser" spec="^1.0.1" />
 </widget>
