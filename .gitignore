@@ -8,8 +8,3 @@ bootstrap.css
 
 # sass cache folder
 resources/sass/.sass-cache/
-
-
-# cordova
-cordova/www
-cordova/platforms/android/assets/
