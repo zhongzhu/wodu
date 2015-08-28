@@ -66,15 +66,42 @@ Ext.define('Wodu.controller.SearchBooks', {
 
       bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data));
 
-      var newRecord = Ext.create('Wodu.model.ReadingInfo', {
-        updated: '',
-        book_id: record.data.id,
-        book: record.data
-      });
+      var newRecord;
+      if (record.data.current_user_collection) {
+        newRecord = Ext.create('Wodu.model.ReadingInfo', {
+          updated: record.data.current_user_collection.updated,
+          id: record.data.current_user_collection.id,
+          book_id: record.data.id,
+          book: record.data
+        });
+      } else {
+        newRecord = Ext.create('Wodu.model.ReadingInfo', {
+          updated: '',
+          book_id: record.data.id,
+          book: record.data
+        });
+      }
 
       bookDetailsView.down('#book_title').setRecord(newRecord);
-      bookDetailsView.down('#bookdetails_actionbutton').setText('想看这本书');
-      bookDetailsView.down('#bookdetails_deletebutton').hide();
+
+      var current_user_collection = record.data.current_user_collection;
+      if (current_user_collection) {
+        switch (current_user_collection.status) {
+          case 'reading':
+            bookDetailsView.down('#bookdetails_actionbutton').setText('已看完');
+            break;
+          case 'wish':
+            bookDetailsView.down('#bookdetails_actionbutton').setText('开始看');
+            break;
+          case 'read':
+            bookDetailsView.down('#bookdetails_actionbutton').setText('再看一遍');
+            bookDetailsView.down('#bookdetails_deletebutton').hide();
+            break;
+        }
+      } else {
+        bookDetailsView.down('#bookdetails_actionbutton').setText('想看这本书');
+        bookDetailsView.down('#bookdetails_deletebutton').hide();
+      } 
 
       this.getTheNaviView().push(bookDetailsView);
     }    
