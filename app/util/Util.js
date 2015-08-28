@@ -4,15 +4,37 @@ Ext.define('Wodu.util.Util', {
     myApikey: 'xxx', // put your douban apikey here
     mySecret: 'yyy', // put your douban secret here
 
-    showNavBarTitle: function(theNavView, title) {
-      var navBar = theNavView.getNavigationBar();
+    handleNaviBarTitleChange: function(theNaviView, store) {
+      store.on({
+        load: function(theStore, records, successful, operation, eOpts) {
+          this.showNaviBarTitle(theNaviView, theStore);
+        },        
+        addrecords: function(theStore, records, eOpts) {
+          // maybe a bug in Sencah Touch, after insert/remove the store.totalCount won't change
+          theStore.setTotalCount(theStore.getTotalCount() + records.length);
+        },
+        removerecords: function(theStore, records, indices, eOpts) {
+          // maybe a bug in Sencah Touch, after insert/remove the store.totalCount won't change
+          theStore.setTotalCount(theStore.getTotalCount() - records.length);
+        },
+        scope: this
+      });
+    },
 
-      if (theNavView.getInnerItems().length === navBar.backButtonStack.length) {
+    /**
+     * 我在读的书(23)
+     * 我想读的书(25)
+     * 我读过的书(173)
+    **/
+    showNaviBarTitle: function(theNaviView, theStore) {
+      var title = theNaviView.myTitle + '(' + theStore.getTotalCount() + ')';
+      var navBar = theNaviView.getNavigationBar();
+      if (theNaviView.getInnerItems().length === navBar.backButtonStack.length) {
         var stack = navBar.backButtonStack;
         stack[stack.length - 1] = title;
         navBar.setTitle(title);
       }             
-    },
+    },    
 
     checkLogin: function(success, failure) {
       if (localStorage.myToken === undefined) {
@@ -79,48 +101,40 @@ Ext.define('Wodu.util.Util', {
       var me = this;
       store.removeAll(true);
 
-      if (localStorage.myId) {
-          var proxy = store.getProxy();
-          proxy.setExtraParams({
-            fields: 'title,image,author,summary,publisher,pubdate,isbn13,pages,price,id,rating,images',
-            q: searchText,
-            apikey: this.myApikey
-          });
+      var proxy = store.getProxy();
+      proxy.setExtraParams({
+        fields: 'title,image,author,summary,publisher,pubdate,isbn13,pages,price,id,rating,images',
+        q: searchText,
+        apikey: this.myApikey
+      });
 
-          proxy.setUrl('https://api.douban.com/v2/book/search');
-          proxy.setHeaders({Authorization: 'Bearer ' + localStorage.myToken});
-          proxy.on('exception', function(theProxy, response, operation, eOpts) {
-            me.checkIfAccessTokenExpired(response);
-          });
+      proxy.setUrl('https://api.douban.com/v2/book/search');
+      proxy.setHeaders({Authorization: 'Bearer ' + localStorage.myToken});
+      proxy.on('exception', function(theProxy, response, operation, eOpts) {
+        me.checkIfAccessTokenExpired(response);
+      });
 
-          store.load();
-      }
+      store.load();
     },
 
     // 获取某个用户的所有图书收藏信息
     // GET  https://api.douban.com/v2/book/user/:name/collections?status=xx
     getBookCollections: function(status, store, done, fail) {
-          store.on('load', done);
+      var proxy = store.getProxy();
+      proxy.setExtraParams({
+        fields: 'updated,id,book_id,book',
+        status: status,
+        apikey: this.myApikey
+      });
 
-          var proxy = store.getProxy();
-          proxy.setExtraParams({
-            fields: 'updated,id,book_id,book',
-            status: status,
-            apikey: this.myApikey
-          });
+      proxy.setUrl('https://api.douban.com/v2/book/user/' + localStorage.myId + '/collections');
 
-          proxy.setUrl('https://api.douban.com/v2/book/user/' + localStorage.myId + '/collections');
-
-          store.load();
+      store.load();
     },
 
     // 用户删除对某本图书的收藏
     // DELETE  https://api.douban.com/v2/book/:id/collection    
     deleteBookFromCollection: function(bookId, done, fail) {
-      if (localStorage.myToken === undefined) {
-        fail('');
-      }
-
       $.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
           method: 'DELETE',
@@ -134,10 +148,6 @@ Ext.define('Wodu.util.Util', {
     // 用户收藏某本图书
     // POST  https://api.douban.com/v2/book/:id/collection&status=wish
     addBookToCollection: function(bookId, done, fail) {
-      if (localStorage.myToken === undefined) {
-        fail('');
-      }
-
       $.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
           method: 'POST',
@@ -153,10 +163,6 @@ Ext.define('Wodu.util.Util', {
     // 用户修改对某本图书的收藏
     // PUT  https://api.douban.com/v2/book/:id/collection?status=xxx
     changeBookCollectionStatus: function(bookId, status, done, fail) {
-      if (localStorage.myToken === undefined) {
-        fail('');
-      }
-
       $.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
           method: 'PUT',

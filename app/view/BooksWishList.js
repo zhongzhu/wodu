@@ -5,7 +5,7 @@ Ext.define('Wodu.view.BooksWishList', {
     requires: [
         'Ext.XTemplate',
         'Ext.plugin.ListPaging',
-        'Ext.plugin.PullRefresh'
+        'Wodu.util.RefreshFn'
     ],
 
     config: {
@@ -22,9 +22,10 @@ Ext.define('Wodu.view.BooksWishList', {
           noMoreRecordsText: '到头啦'
         },
         {
-            xclass: 'Ext.plugin.PullRefresh',
-            pullText: '放手就可以更新...',
-            lastUpdatedText: '上次更新时间：'
+            xtype: 'refreshFn',
+            refreshFn: function (loaded, arguments) {
+              loaded.getList().getStore().loadPage(1);
+            }
         }
       ],          
 

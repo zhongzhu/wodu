@@ -14,8 +14,8 @@ Ext.define('Wodu.controller.BooksWish', {
 
         control: {
             theNaviView: {
-                show: 'onNaviViewShow',
-                activeitemchange: 'onNaviViewActiveItemChange'
+                initialize: 'onNaviViewInit',
+                show: 'onNaviViewShow'
             },
 
             'bookswishlist': {
@@ -24,11 +24,9 @@ Ext.define('Wodu.controller.BooksWish', {
         } 
     },
 
-    onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
-      if (oldValue.isXType('bookdetails')) {
-        Wodu.util.Util.showNavBarTitle(theNaviView, '我想读的书(' + Ext.getStore('BooksWishStore').getTotalCount() + ')');
-      }
-    },
+    onNaviViewInit: function(theNaviView, eOpts) {
+      Wodu.util.Util.handleNaviBarTitleChange(theNaviView, Ext.getStore('BooksWishStore'));
+    },    
 
     onNaviViewShow: function(theNaviView, eOpts) {        
       var store = Ext.getStore('BooksWishStore');   
@@ -36,9 +34,7 @@ Ext.define('Wodu.controller.BooksWish', {
         Wodu.util.Util.getBookCollections(
           'wish', 
           store, 
-          function(theStore, records, successful, operation, eOpts) { // done
-            Wodu.util.Util.showNavBarTitle(theNaviView, '我想读的书(' + theStore.getTotalCount() + ')');
-          },
+          null,
           null // fail
         );
       }

@@ -6,6 +6,8 @@ Ext.define('Wodu.view.BooksReadNaviView', {
       'Wodu.view.BooksReadList'
     ],
 
+	myTitle: '我读过的书',    
+
     config: {
     	defaultBackButtonText: '返回',
         items: [{xtype: 'booksreadlist'}]      

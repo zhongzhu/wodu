@@ -14,8 +14,8 @@ Ext.define('Wodu.controller.BooksReading', {
 
         control: {
             theNaviView: {
-                show: 'onNaviViewShow',
-                activeitemchange: 'onNaviViewActiveItemChange'
+                initialize: 'onNaviViewInit',
+                show: 'onNaviViewShow'
             },
 
             'booksreadinglist': {
@@ -24,10 +24,8 @@ Ext.define('Wodu.controller.BooksReading', {
         } 
     },
 
-    onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
-      if (oldValue.isXType('bookdetails')) {
-        Wodu.util.Util.showNavBarTitle(theNaviView, '我在读的书(' + Ext.getStore('BooksReadingStore').getTotalCount() + ')');
-      }
+    onNaviViewInit: function(theNaviView, eOpts) {
+      Wodu.util.Util.handleNaviBarTitleChange(theNaviView, Ext.getStore('BooksReadingStore'));
     },
 
     onNaviViewShow: function(theBooksreadingNaviView, eOpts) {    
@@ -37,9 +35,7 @@ Ext.define('Wodu.controller.BooksReading', {
         Wodu.util.Util.getBookCollections(
           'reading', 
           store, 
-          function(theStore, records, successful, operation, eOpts) { // done
-            Wodu.util.Util.showNavBarTitle(theBooksreadingNaviView, '我在读的书(' + theStore.getTotalCount() + ')');
-          },
+          null,
           null // fail
         );
       }

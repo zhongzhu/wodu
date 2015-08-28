@@ -2,13 +2,19 @@ Ext.define('Wodu.controller.BookDetails', {
     extend: 'Ext.app.Controller',
 
     requires: [
-      'Wodu.view.BookDetails'
+      'Wodu.view.BookDetails',
+      'Wodu.view.BooksReadingNaviView',
+      'Wodu.view.BooksWishNaviView',
+      'Wodu.view.BooksReadNaviView'
     ],       
 
     config: {
         refs: {
             bookDetails: 'bookdetails',
-            loginPanel: 'loginpanel'
+            loginPanel: 'loginpanel',
+            booksReadingNaviView: 'booksreadingnaviview',
+            booksWishNaviView: 'bookswishnaviview',
+            booksReadNaviView: 'booksreadnaviview'
         },
 
         control: {
@@ -18,8 +24,18 @@ Ext.define('Wodu.controller.BookDetails', {
 
             'bookdetails #bookdetails_deletebutton': {
                 tap: 'onDeleteButtonTap'
+            },
+
+            bookDetails: {
+              destroy: 'onBookDetailsPanelDestroy'
             }
         } 
+    },
+
+    onBookDetailsPanelDestroy: function(eOpts) {     
+      Wodu.util.Util.showNaviBarTitle(this.getBooksReadingNaviView(), Ext.getStore('BooksReadingStore'));
+      Wodu.util.Util.showNaviBarTitle(this.getBooksWishNaviView(), Ext.getStore('BooksWishStore'));
+      Wodu.util.Util.showNaviBarTitle(this.getBooksReadNaviView(), Ext.getStore('BooksReadStore'));
     },
 
     // 用户删除对某本图书的收藏

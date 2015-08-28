@@ -4,8 +4,7 @@ Ext.define('Wodu.view.SearchBooksList', {
 
     requires: [
         'Ext.XTemplate',
-        'Ext.plugin.ListPaging',
-        'Ext.plugin.PullRefresh'
+        'Ext.plugin.ListPaging'
     ],
 
     config: {
