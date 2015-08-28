@@ -153,6 +153,7 @@ Ext.define('Wodu.controller.BookDetails', {
               function(response) { // fail                
                 var resp = response.responseJSON;
                 if (resp.code === 6011) {
+                  // collection_exist(try PUT if you want to update, 6011
                   Ext.Msg.alert('出错了', '你已经加过这本书了，不能重复加。');
                 } else {
                   Ext.Msg.alert('出错了', '无法改变成想读状态。');

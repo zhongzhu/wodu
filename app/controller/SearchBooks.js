@@ -4,6 +4,7 @@ Ext.define('Wodu.controller.SearchBooks', {
     config: {
         refs: {
           theNaviView: 'searchbooksnaviview',
+          searchBooksList: 'searchbookslist',
           theSearchField: 'searchbooksnaviview searchfield'
         },
 
@@ -53,7 +54,9 @@ Ext.define('Wodu.controller.SearchBooks', {
 
     searchAction: function(theSearchField, e, eOpts) {
       var searchText = theSearchField.getValue();
-      var store = Ext.getStore('SearchBooksStore');   
+
+      var store = Ext.create('Wodu.store.SearchBooksStore');
+      this.getSearchBooksList().setStore(store);
 
       Wodu.util.Util.searchForBooks(searchText, store);       
     },

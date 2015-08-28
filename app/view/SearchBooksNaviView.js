@@ -19,7 +19,8 @@ Ext.define('Wodu.view.SearchBooksNaviView', {
               {
                 xtype: 'button',
                 itemId: 'scanButton',
-                iconCls: 'camera'
+                iconCls: 'camera',
+                docked: 'right'
               }
           ]
         },

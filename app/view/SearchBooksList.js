@@ -7,11 +7,11 @@ Ext.define('Wodu.view.SearchBooksList', {
         'Ext.plugin.ListPaging'
     ],
 
-    config: {
-      store: 'SearchBooksStore',
+    config: {      
       disableSelection: true,
       itemHeight: '135px',
       variableHeights: false,
+      emptyText: '奇怪，搜不到这本书',
 
       plugins: [{
         xclass: 'Ext.plugin.ListPaging',
@@ -28,7 +28,17 @@ Ext.define('Wodu.view.SearchBooksList', {
                   '<div style="margin-top:10px"><span style="color:#666;">作者:   </span>{author}</div>',
                   '<div style="margin-top:2px"><span style="color:#666;">出版商: </span>{publisher}</div>',
                   '<div style="margin-top:2px"><span style="color:#666;">出版:   </span>{pubdate}</div>',
-                  '<div style="margin-top:4px"><span style="color:#666;">评价:   </span>{rating.average}/10</div>',
+                  '<div style="margin-top:2px"><span style="color:#666;">评价:   </span>{rating.average}/10</div>',
+                  '<tpl if="current_user_collection">',
+                    '<tpl switch="current_user_collection.status">',
+                      '<tpl case="reading">',
+                        '<div style="margin-top:4px><span style="color:blue;">本书我已"在读"</span></div>',
+                      '<tpl case="wish">',
+                        '<div style="margin-top:4px><span style="color:blue;">本书我已"想读"</span></div>',
+                      '<tpl case="read">',
+                        '<div style="margin-top:4px><span style="color:blue;">本书我已"读过"</span></div>',
+                    '</tpl>',                    
+                  '</tpl>',
                 '</div>',
             '</div>'              
       ]                                 

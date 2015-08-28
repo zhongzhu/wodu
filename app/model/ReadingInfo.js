@@ -8,14 +8,9 @@ Ext.define('Wodu.model.ReadingInfo', {
     config: {
         fields: [
             {name: 'updated', type: 'string'},
-            { 
-                name: 'begin_reading_date', 
-                convert: function(value, record) {
-                    return record.get('updated').split(" ")[0]
-                }
-            },
-            { name: 'id', type: 'auto' },
-            { name: 'book_id', type: 'string' }
+            {name: 'status', type: 'string'},            
+            {name: 'id', type: 'auto'},
+            {name: 'book_id', type: 'string'}
         ],
 
         hasOne: {

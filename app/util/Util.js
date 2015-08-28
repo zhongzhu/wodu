@@ -99,11 +99,10 @@ Ext.define('Wodu.util.Util', {
     // GET  https://api.douban.com/v2/book/search?q=searchText
     searchForBooks: function(searchText, store) {
       var me = this;
-      store.removeAll(true);
 
       var proxy = store.getProxy();
       proxy.setExtraParams({
-        fields: 'title,image,author,summary,publisher,pubdate,isbn13,pages,price,id,rating,images',
+        fields: 'title,image,author,summary,publisher,pubdate,isbn13,pages,price,id,rating,images,current_user_collection',
         q: searchText,
         apikey: this.myApikey
       });
@@ -122,7 +121,7 @@ Ext.define('Wodu.util.Util', {
     getBookCollections: function(status, store, done, fail) {
       var proxy = store.getProxy();
       proxy.setExtraParams({
-        fields: 'updated,id,book_id,book',
+        fields: 'updated,status,id,book_id,book',
         status: status,
         apikey: this.myApikey
       });
@@ -135,19 +134,23 @@ Ext.define('Wodu.util.Util', {
     // 用户删除对某本图书的收藏
     // DELETE  https://api.douban.com/v2/book/:id/collection    
     deleteBookFromCollection: function(bookId, done, fail) {
+      var me = this;
+
       $.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
           method: 'DELETE',
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
       }).done(done)
       .fail(function(response) {
-        this.checkIfAccessTokenExpired(response, fail);
+        me.checkIfAccessTokenExpired(response, fail);
       });
     },
 
     // 用户收藏某本图书
     // POST  https://api.douban.com/v2/book/:id/collection&status=wish
     addBookToCollection: function(bookId, done, fail) {
+      var me = this;
+
       $.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
           method: 'POST',
@@ -156,13 +159,15 @@ Ext.define('Wodu.util.Util', {
       })
       .done(done)
       .fail(function(response) {
-        this.checkIfAccessTokenExpired(response, fail);
+        me.checkIfAccessTokenExpired(response, fail);
       });
     },
 
     // 用户修改对某本图书的收藏
     // PUT  https://api.douban.com/v2/book/:id/collection?status=xxx
     changeBookCollectionStatus: function(bookId, status, done, fail) {
+      var me = this;
+
       $.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
           method: 'PUT',
@@ -170,7 +175,7 @@ Ext.define('Wodu.util.Util', {
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
       }).done(done)
       .fail(function(response) {
-        this.checkIfAccessTokenExpired(response, fail);
+        me.checkIfAccessTokenExpired(response, fail);
       });
     }
 

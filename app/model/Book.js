@@ -14,6 +14,14 @@ Ext.define('Wodu.model.Rating', {
     }
 });
 
+Ext.define('Wodu.model.Current_user_collection', {
+    extend: 'Ext.data.Model',
+    
+    config: {
+        fields: ['status', 'updated']
+    }
+});
+
 
 Ext.define('Wodu.model.Book', {
     extend: 'Ext.data.Model',
@@ -44,6 +52,10 @@ Ext.define('Wodu.model.Book', {
         {
             model: 'Wodu.model.Images',
             name: 'images'    
+        },
+        {
+            model: 'Wodu.model.Current_user_collection',
+            name: 'current_user_collection'
         }]
     }
 });
