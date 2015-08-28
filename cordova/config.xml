@@ -24,6 +24,6 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <plugin name="phonegap-plugin-barcodescanner" spec="^4.0.1" />
     <plugin name="cordova-plugin-inappbrowser" spec="^1.0.1" />
+    <plugin name="phonegap-plugin-barcodescanner" spec="^4.0.1" />
 </widget>
