@@ -10,4 +10,5 @@ bootstrap.css
 resources/sass/.sass-cache/
 
 # cordova
-cordova/www
+cordova/
+!cordova/config.xml
