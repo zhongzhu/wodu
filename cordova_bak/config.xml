@@ -1,12 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.easy.wodu" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>爱看书笔记</name>
-    <description>
-        一个读书记录APP，用来记录自己正在读/想读/读过的书
-    </description>
-    <author email="zhongzhu@ymail.com" href="https://github.com/zhongzhu/wodu">
-        Zhu Zhong
-    </author>
+    <description>一个读书记录APP，用来记录自己正在读/想读/读过的书</description>
+    <author email="zhongzhu@ymail.com" href="https://github.com/zhongzhu/wodu">钟柱</author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" version="1" />
     <access origin="*" />
@@ -60,10 +56,9 @@
         <!-- iPhone 6 -->
         <splash src="www/resources/startup/Default-667h.png" width="750" height="1334"/>
         <!-- iPhone 6 Plus-->
-        <splash src="www/resources/startup/Default-736h.png" width="1242" height="2208"/>
-
-        <plugin name="cordova-plugin-statusbar" spec="~1.0.1" />
+        <splash src="www/resources/startup/Default-736h.png" width="1242" height="2208"/>       
     </platform>
-        <plugin name="cordova-plugin-inappbrowser" spec="~1.0.1" />
+    <plugin name="cordova-plugin-inappbrowser" spec="~1.0.1" />
     <plugin name="phonegap-plugin-barcodescanner" spec="~4.0.1" />  
+    <plugin name="cordova-plugin-statusbar" spec="~1.0.1" />
 </widget>
