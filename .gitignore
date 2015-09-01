@@ -11,4 +11,3 @@ resources/sass/.sass-cache/
 
 # cordova
 cordova/
-!cordova/config.xml
