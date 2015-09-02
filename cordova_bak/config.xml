@@ -16,10 +16,15 @@
     <platform name="android">
         <allow-intent href="market:*" />
         <preference name="SplashScreen" value="screen" />
+        <splash src="www/resources/startup/splash-port-ldpi.png" width="200" height="320" density="port-ldpi"/>
+        <splash src="www/resources/startup/splash-port-mdpi.png" width="320" height="480" density="port-mdpi"/>
+        <splash src="www/resources/startup/splash-port-hdpi.png" width="480" height="800" density="port-hdpi"/>
+        <splash src="www/resources/startup/splash-port-xhdpi.png" width="720" height="1280" density="port-xhdpi"/>
+
         <icon src="www/resources/icons/Icon_Android36.png" width="36" height="36" density="ldpi" />
         <icon src="www/resources/icons/Icon_Android48.png" width="48" height="48" density="mdpi" />
-<!--         <icon src="www/resources/icons/Icon_Android72.png" width="72" height="72" density="hdpi" />
-        <icon src="www/resources/icons/Icon_Android96.png" width="96" height="96" density="xhdpi" /> -->
+        <icon src="www/resources/icons/Icon_Android72.png" width="72" height="72" density="hdpi" />
+        <icon src="www/resources/icons/Icon_Android96.png" width="96" height="96" density="xhdpi" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
