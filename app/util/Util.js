@@ -57,6 +57,13 @@ Ext.define('Wodu.util.Util', {
 
     // check access_token_has_expired from ajax response
     checkIfAccessTokenExpired: function(response, callBackIfNotExpired) {
+      // maybe a network issue, no reponse is got from server
+      if (response.status === 0 && response.responseText.length === 0) {
+        Ext.Msg.alert('出错啦', '貌似网络有问题，请重新试试。');
+        // Ext.toast('貌似网络有问题，请重新试试。', 2000);
+        return;
+      }
+
       var resp = Ext.JSON.decode(response.responseText);
       if (resp.code === 106 || resp.code === 103) {
         // access_token_has_expired, 106;
@@ -78,35 +85,31 @@ Ext.define('Wodu.util.Util', {
 
     // oauth2 with douban
     authentication: function(success, failure) {
-      // if (localStorage.myToken === undefined) {
-        $.oauth2(
-          {
-            auth_url: 'https://www.douban.com/service/auth2/auth',
-            response_type: 'code',      // required - "code"/"token"
-            token_url: 'https://www.douban.com/service/auth2/token',  // required if response_type = 'code'
-            logout_url: '',  // recommended if available
-            client_id: this.myApikey,
-            client_secret: this.mySecret, // required if response_type = 'code'
-            redirect_uri: 'http://aikanshu.sinaapp.com', // required - some dummy url
-            other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
-          },
+      $.oauth2(
+        {
+          auth_url: 'https://www.douban.com/service/auth2/auth',
+          response_type: 'code',      // required - "code"/"token"
+          token_url: 'https://www.douban.com/service/auth2/token',  // required if response_type = 'code'
+          logout_url: '',  // recommended if available
+          client_id: this.myApikey,
+          client_secret: this.mySecret, // required if response_type = 'code'
+          redirect_uri: 'http://aikanshu.sinaapp.com', // required - some dummy url
+          other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
+        },
 
-          function(token, response) { // success
-            localStorage.myToken = token;
-            localStorage.myId = response.douban_user_id;
-            localStorage.myRefreshToken = response.refresh_token;
-            localStorage.myName = response.douban_user_name;
+        function(token, response) { // success
+          localStorage.myToken = token;
+          localStorage.myId = response.douban_user_id;
+          localStorage.myRefreshToken = response.refresh_token;
+          localStorage.myName = response.douban_user_name;
 
-            success();
-          },
+          success();
+        },
 
-          function(error, response){ // failure
-            localStorage.removeItem('myToken');
-            failure();
-        });
-      // } else {
-      //   success();
-      // }
+        function(error, response){ // failure
+          localStorage.removeItem('myToken');
+          failure();
+      });
     },
 
     // 搜索图书

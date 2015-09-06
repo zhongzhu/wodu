@@ -11,6 +11,7 @@ Ext.define('Wodu.view.SearchBooksList', {
       disableSelection: true,
       itemHeight: '135px',
       variableHeights: false,
+      deferEmptyText: true,
       emptyText: '奇怪，搜不到这本书',
 
       plugins: [{
