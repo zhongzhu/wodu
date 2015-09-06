@@ -7,8 +7,12 @@ Ext.define('Wodu.util.Util', {
     handleNaviBarTitleChange: function(theNaviView, store) {
       store.on({
         load: function(theStore, records, successful, operation, eOpts) {
-          this.showNaviBarTitle(theNaviView, theStore);
-        },        
+          if (successful) {
+            this.showNaviBarTitle(theNaviView, theStore);
+          } else {
+            Ext.Msg.alert('出错啦', '貌似网络有问题，请试试下拉来重新加载。');
+          }
+        },
         addrecords: function(theStore, records, eOpts) {
           // maybe a bug in Sencah Touch, after insert/remove the store.totalCount won't change
           theStore.setTotalCount(theStore.getTotalCount() + records.length);
@@ -33,24 +37,34 @@ Ext.define('Wodu.util.Util', {
         var stack = navBar.backButtonStack;
         stack[stack.length - 1] = title;
         navBar.setTitle(title);
-      }             
-    },    
+      }
+    },
 
-    checkLogin: function(success, failure) {
+    checkLogin: function() {
+      var login = Ext.create('Wodu.view.Login');
+
       if (localStorage.myToken === undefined) {
-        failure();
+        // failure
+        Ext.Viewport.add(login);
       } else {
-        success();
+        // success
+        var main = Ext.create('Wodu.view.Main');
+        Ext.Viewport.add([login, main]);
+        // activeIndex: 0, login; 1, main
+        Ext.Viewport.animateActiveItem(1, {type: 'slide', direction: 'left'});
       }
     },
 
     // check access_token_has_expired from ajax response
     checkIfAccessTokenExpired: function(response, callBackIfNotExpired) {
       var resp = Ext.JSON.decode(response.responseText);
-      if (resp.code === 106 || resp.code === 103) { 
+      if (resp.code === 106 || resp.code === 103) {
         // access_token_has_expired, 106;
         // invalid_access_token: undefined, 103
         Ext.Msg.alert('出错啦', '你的豆瓣网登录已超时，请重新登录。');
+
+        localStorage.removeItem('myToken');
+
         // activeItem: 0, Index; 1, main
         Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
       } else {
@@ -64,7 +78,7 @@ Ext.define('Wodu.util.Util', {
 
     // oauth2 with douban
     authentication: function(success, failure) {
-      if (localStorage.myToken === undefined) {
+      // if (localStorage.myToken === undefined) {
         $.oauth2(
           {
             auth_url: 'https://www.douban.com/service/auth2/auth',
@@ -75,7 +89,7 @@ Ext.define('Wodu.util.Util', {
             client_secret: this.mySecret, // required if response_type = 'code'
             redirect_uri: 'http://aikanshu.sinaapp.com', // required - some dummy url
             other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
-          }, 
+          },
 
           function(token, response) { // success
             localStorage.myToken = token;
@@ -84,15 +98,15 @@ Ext.define('Wodu.util.Util', {
             localStorage.myName = response.douban_user_name;
 
             success();
-          }, 
+          },
 
           function(error, response){ // failure
-            localStorage.removeItem('myToken');   
-            failure();      
-        });  
-      } else {
-        success();
-      }
+            localStorage.removeItem('myToken');
+            failure();
+        });
+      // } else {
+      //   success();
+      // }
     },
 
     // 搜索图书
@@ -132,7 +146,7 @@ Ext.define('Wodu.util.Util', {
     },
 
     // 用户删除对某本图书的收藏
-    // DELETE  https://api.douban.com/v2/book/:id/collection    
+    // DELETE  https://api.douban.com/v2/book/:id/collection
     deleteBookFromCollection: function(bookId, done, fail) {
       var me = this;
 

@@ -52,20 +52,7 @@ Ext.application({
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
-        var login = Ext.create('Wodu.view.Login');
-        Wodu.util.Util.checkLogin(
-          function() { // success
-            var main = Ext.create('Wodu.view.Main');
-            Ext.Viewport.add([login, main]);
-            // activeIndex: 0, login; 1, main
-            Ext.Viewport.animateActiveItem(1, {type: 'slide', direction: 'left'});
-          },
-
-          function() { // failure
-            Ext.Viewport.add(login);
-          }
-        );
-
+        Wodu.util.Util.checkLogin();
     },
 
     onUpdated: function() {

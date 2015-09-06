@@ -10,15 +10,28 @@ Ext.define('Wodu.controller.Login', {
             'loginpanel #loginButton': {
                 tap: 'login'
             }
-        }            
+        }
     },
 
     login: function(theButton, e, eOpts) {
         var me = this;
+
         Wodu.util.Util.authentication(
             function() { // success
-                var main = Ext.create('Wodu.view.Main');
-                Ext.Viewport.add(main);
+                var main = Ext.Viewport.down('main');
+                if (main) {
+                    // re-login, need to clear the states
+                    Ext.getStore('BooksReadingStore').removeAll();
+                    Ext.getStore('BooksWishStore').removeAll();
+                    Ext.getStore('BooksReadStore').removeAll();
+                    Ext.getStore('SearchBooksStore').removeAll();
+
+                    main.setActiveItem(0);//BooksReadingNaviView
+                } else {
+                    main = Ext.create('Wodu.view.Main');
+                    Ext.Viewport.add(main);
+                }
+
                 Ext.Viewport.animateActiveItem(main, {type: 'slide', direction: 'left'});
             },
 
