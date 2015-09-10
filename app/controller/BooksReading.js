@@ -42,7 +42,7 @@ Ext.define('Wodu.controller.BooksReading', {
                   'margin-left':'auto',
                   'margin-right':'auto'
                 },
-                src: 'http://www.sencha.com/assets/images/sencha-avatar-64x64.png'
+                src: localStorage.myAvatar
                },
                {
                   xtype: 'label',

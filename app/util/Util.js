@@ -85,6 +85,8 @@ Ext.define('Wodu.util.Util', {
 
     // oauth2 with douban
     authentication: function(success, failure) {
+      var me = this;
+
       $.oauth2(
         {
           auth_url: 'https://www.douban.com/service/auth2/auth',
@@ -103,6 +105,8 @@ Ext.define('Wodu.util.Util', {
           localStorage.myRefreshToken = response.refresh_token;
           localStorage.myName = response.douban_user_name;
 
+          me.getCurrentUserInfo();
+
           success();
         },
 
@@ -111,6 +115,24 @@ Ext.define('Wodu.util.Util', {
           failure();
       });
     },
+
+    // 获取当前授权用户信息
+    // GET https://api.douban.com/v2/user/~me
+    getCurrentUserInfo: function(success, failure) {
+      var me = this;
+
+      $.ajax({
+          url: 'https://api.douban.com/v2/user/~me',
+          method: 'GET',
+          headers: {Authorization: 'Bearer ' + localStorage.myToken}
+      }).done(function(response) {
+        console.log(response);
+        localStorage.myAvatar = response.avatar;
+      }).fail(function(response) {
+        me.checkIfAccessTokenExpired(response, failure);
+      });
+    },
+
 
     // 搜索图书
     // GET  https://api.douban.com/v2/book/search?q=searchText
