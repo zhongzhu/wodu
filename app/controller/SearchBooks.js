@@ -53,12 +53,13 @@ Ext.define('Wodu.controller.SearchBooks', {
     },
 
     searchAction: function(theSearchField, e, eOpts) {
+      var me = this;
       var searchText = theSearchField.getValue();
 
       var store = Ext.create('Wodu.store.SearchBooksStore');
       this.getSearchBooksList().setStore(store);
 
-      Wodu.util.Util.searchForBooks(searchText, store);       
+      Wodu.util.Util.searchForBooks(searchText, store);
     },
 
     onListItemTap: function(theList, index, target, record, e, eOpts) {

@@ -40,7 +40,7 @@ Ext.define('Wodu.util.Util', {
       }
     },
 
-    checkLogin: function() {
+    login: function() {
       var login = Ext.create('Wodu.view.Login');
 
       if (localStorage.myToken === undefined) {
@@ -55,12 +55,24 @@ Ext.define('Wodu.util.Util', {
       }
     },
 
+    logout: function() {
+      localStorage.removeItem('myToken');
+      localStorage.removeItem('myId');
+      localStorage.removeItem('myRefreshToken');
+      localStorage.removeItem('myName');
+      localStorage.removeItem('myAvatar');
+
+      // activeItem: 0, Index; 1, main
+      Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
+    },
+
     // check access_token_has_expired from ajax response
     checkIfAccessTokenExpired: function(response, callBackIfNotExpired) {
+      var me = this;
+
       // maybe a network issue, no reponse is got from server
       if (response.status === 0 && response.responseText.length === 0) {
         Ext.Msg.alert('出错啦', '貌似网络有问题，请重新试试。');
-        // Ext.toast('貌似网络有问题，请重新试试。', 2000);
         return;
       }
 
@@ -70,10 +82,7 @@ Ext.define('Wodu.util.Util', {
         // invalid_access_token: undefined, 103
         Ext.Msg.alert('出错啦', '你的豆瓣网登录已超时，请重新登录。');
 
-        localStorage.removeItem('myToken');
-
-        // activeItem: 0, Index; 1, main
-        Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
+        me.logout();
       } else {
         if (callBackIfNotExpired === undefined) {
           Ext.Msg.alert('出错啦',resp.msg);

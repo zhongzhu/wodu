@@ -31,7 +31,6 @@ Ext.define('Wodu.controller.BooksReading', {
 
     onUserButtonTap: function(theButton, e, eOpts) {
       var menu = Ext.create('Ext.Menu', {
-           layout: 'vbox',
            items: [
                {
                 xtype: 'image',
@@ -39,26 +38,18 @@ Ext.define('Wodu.controller.BooksReading', {
                 height: '64px',
                 style: {
                   'border-radius':'25px',
-                  'margin-left':'auto',
-                  'margin-right':'auto'
+                  'margin': '10px auto 10px auto'
                 },
                 src: localStorage.myAvatar
                },
                {
-                  xtype: 'label',
-                  html: localStorage.myName
+                  xtype: 'component',
+                  html: '<div style="color:white;margin:10px auto 15px auto;text-align:center">' + localStorage.myName + '</div>'
                },
                {
-                   text: 'Settings',
-                   iconCls: 'settings'
-               },
-               {
-                   text: 'New Item',
-                   iconCls: 'compose'
-               },
-               {
-                   text: 'Star',
-                   iconCls: 'star'
+                   text: '退出登陆',
+                   ui: 'decline',
+                   itemId: 'logoutButton'
                }
            ]
        });

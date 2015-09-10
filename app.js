@@ -23,7 +23,7 @@ Ext.application({
     ],
 
     controllers: [
-        'Login', 'Main', 'BooksReading', 'BooksWish', 'BooksRead', 'BookDetails', 'SearchBooks'
+        'Login', 'Main', 'BooksReading', 'BooksWish', 'BooksRead', 'BookDetails', 'SearchBooks', 'Menu'
     ],    
 
     stores: [
@@ -52,7 +52,7 @@ Ext.application({
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
-        Wodu.util.Util.checkLogin();
+        Wodu.util.Util.login();
     },
 
     onUpdated: function() {
