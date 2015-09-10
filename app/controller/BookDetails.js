@@ -6,7 +6,7 @@ Ext.define('Wodu.controller.BookDetails', {
       'Wodu.view.BooksReadingNaviView',
       'Wodu.view.BooksWishNaviView',
       'Wodu.view.BooksReadNaviView'
-    ],       
+    ],
 
     config: {
         refs: {
@@ -29,10 +29,10 @@ Ext.define('Wodu.controller.BookDetails', {
             bookDetails: {
               destroy: 'onBookDetailsPanelDestroy'
             }
-        } 
+        }
     },
 
-    onBookDetailsPanelDestroy: function(eOpts) {     
+    onBookDetailsPanelDestroy: function(eOpts) {
       Wodu.util.Util.showNaviBarTitle(this.getBooksReadingNaviView(), Ext.getStore('BooksReadingStore'));
       Wodu.util.Util.showNaviBarTitle(this.getBooksWishNaviView(), Ext.getStore('BooksWishStore'));
       Wodu.util.Util.showNaviBarTitle(this.getBooksReadNaviView(), Ext.getStore('BooksReadStore'));
@@ -42,14 +42,14 @@ Ext.define('Wodu.controller.BookDetails', {
     // DELETE  https://api.douban.com/v2/book/:id/collection
     onDeleteButtonTap: function(theButton, e, eOpts) {
       // Reading / wish
-      var record = this.getBookDetails().down('#book_title').getRecord();        
+      var record = this.getBookDetails().down('#book_title').getRecord();
       var bookId = record.data.book.id;
 
       Wodu.util.Util.deleteBookFromCollection(
-        bookId,          
+        bookId,
         function(response) { // done
           var theNaviView = theButton.up('navigationview');
-          
+
           if (theNaviView.isXType('booksreadingnaviview')) {
               Ext.getStore('BooksReadingStore').remove(record);
           } else if (theNaviView.isXType('bookswishnaviview')) {
@@ -60,10 +60,10 @@ Ext.define('Wodu.controller.BookDetails', {
         },
 
         function(response) { // fail
-          Ext.Msg.alert('出错了', '无法删除这本书');          
-        }          
-      );          
-                      
+          Ext.Msg.alert('出错了', '无法删除这本书');
+        }
+      );
+
     },
 
     // 用户修改对某本图书的收藏
@@ -73,7 +73,7 @@ Ext.define('Wodu.controller.BookDetails', {
         var record = this.getBookDetails().down('#book_title').getRecord();
         var bookId = record.data.book.id;
 
-        var buttonText = theButton.getText();        
+        var buttonText = theButton.getText();
         if (buttonText === '已看完') {
             // Books Reading
             Wodu.util.Util.changeBookCollectionStatus(
@@ -113,8 +113,8 @@ Ext.define('Wodu.controller.BookDetails', {
 
               function(response) {
                   Ext.Msg.alert('出错了', '无法改变成正在读状态');
-              }                  
-            );      
+              }
+            );
 
         } else if (buttonText === '再看一遍') {
             // Books read
@@ -131,12 +131,12 @@ Ext.define('Wodu.controller.BookDetails', {
 
                 theButton.up('navigationview').pop();
               },
-              
+
               function(response) {
                 Ext.Msg.alert('出错了', '无法改变成想读状态');
-              }                            
-            );        
-                 
+              }
+            );
+
         } else if (buttonText === '想看这本书') {
             // Search Books
             Wodu.util.Util.addBookToCollection(
@@ -150,7 +150,7 @@ Ext.define('Wodu.controller.BookDetails', {
                 theButton.up('navigationview').pop();
               },
 
-              function(response) { // fail                
+              function(response) { // fail
                 var resp = response.responseJSON;
                 if (resp.code === 6011) {
                   // collection_exist(try PUT if you want to update, 6011
@@ -158,10 +158,10 @@ Ext.define('Wodu.controller.BookDetails', {
                 } else {
                   Ext.Msg.alert('出错了', '无法改变成想读状态。');
                 }
-              }                      
-            );             
+              }
+            );
         }
 
-    }    
+    }
 
 });

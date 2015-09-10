@@ -2,10 +2,11 @@ Ext.define('Wodu.controller.BooksReading', {
     extend: 'Ext.app.Controller',
 
     requires: [
+      'Ext.Menu',
       'Wodu.view.BookDetails',
       'Wodu.view.BooksReadingList',
       'Wodu.view.BooksReadingNaviView'
-    ],       
+    ],
 
     config: {
         refs: {
@@ -19,22 +20,64 @@ Ext.define('Wodu.controller.BooksReading', {
             },
 
             'booksreadinglist': {
-              itemtap: 'onBooksReadinglistItemTap' 
+              itemtap: 'onBooksReadinglistItemTap'
+            },
+
+            'booksreadingnaviview titlebar #userButton': {
+              tap: 'onUserButtonTap'
             }
-        } 
+        }
+    },
+
+    onUserButtonTap: function(theButton, e, eOpts) {
+      var menu = Ext.create('Ext.Menu', {
+           layout: 'vbox',
+           items: [
+               {
+                xtype: 'image',
+                width: '64px',
+                height: '64px',
+                style: {
+                  'border-radius':'25px',
+                  'margin-left':'auto',
+                  'margin-right':'auto'
+                },
+                src: 'http://www.sencha.com/assets/images/sencha-avatar-64x64.png'
+               },
+               {
+                  xtype: 'label',
+                  html: localStorage.myName
+               },
+               {
+                   text: 'Settings',
+                   iconCls: 'settings'
+               },
+               {
+                   text: 'New Item',
+                   iconCls: 'compose'
+               },
+               {
+                   text: 'Star',
+                   iconCls: 'star'
+               }
+           ]
+       });
+
+       Ext.Viewport.setMenu(menu, {side: 'left'});
+       Ext.Viewport.toggleMenu('left');
     },
 
     onNaviViewInit: function(theNaviView, eOpts) {
       Wodu.util.Util.handleNaviBarTitleChange(theNaviView, Ext.getStore('BooksReadingStore'));
     },
 
-    onNaviViewShow: function(theBooksreadingNaviView, eOpts) {    
-      var store = Ext.getStore('BooksReadingStore');   
+    onNaviViewShow: function(theBooksreadingNaviView, eOpts) {
+      var store = Ext.getStore('BooksReadingStore');
 
       if (0 === store.getCount()) {
         Wodu.util.Util.getBookCollections(
-          'reading', 
-          store, 
+          'reading',
+          store,
           null,
           null // fail
         );

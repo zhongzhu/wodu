@@ -4,7 +4,7 @@ Ext.define('Wodu.view.SearchBooksNaviView', {
 
     requires: [
         'Wodu.view.SearchBooksList',
-        'Ext.field.Search'   
+        'Ext.field.Search'
     ],
 
     config: {
