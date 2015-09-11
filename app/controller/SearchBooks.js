@@ -16,7 +16,7 @@ Ext.define('Wodu.controller.SearchBooks', {
             theSearchField: {
               action: 'searchAction'
             },
-            
+
             'searchbookslist': {
               itemtap: 'onListItemTap'
             },
@@ -24,7 +24,7 @@ Ext.define('Wodu.controller.SearchBooks', {
             'searchbooksnaviview #scanButton': {
               tap: 'scanBarCode'
             }
-        }            
+        }
     },
 
     scanBarCode: function(theButton, e, eOpts) {
@@ -35,11 +35,11 @@ Ext.define('Wodu.controller.SearchBooks', {
           var theSearchField = me.getTheSearchField();
           theSearchField.setValue(result.text);
           me.searchAction(theSearchField);
-        }, 
+        },
         function (error) {
           Ext.Msg.alert('扫描出错了', error);
         }
-      );      
+      );
     },
 
     onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
@@ -102,9 +102,9 @@ Ext.define('Wodu.controller.SearchBooks', {
       } else {
         bookDetailsView.down('#bookdetails_actionbutton').setText('想看这本书');
         bookDetailsView.down('#bookdetails_deletebutton').hide();
-      } 
+      }
 
       this.getTheNaviView().push(bookDetailsView);
-    }    
+    }
 
 });

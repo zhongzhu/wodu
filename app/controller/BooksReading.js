@@ -16,7 +16,8 @@ Ext.define('Wodu.controller.BooksReading', {
         control: {
             theNaviView: {
                 initialize: 'onNaviViewInit',
-                show: 'onNaviViewShow'
+                show: 'onNaviViewShow',
+                activeitemchange: 'onNaviViewActiveItemChange'
             },
 
             'booksreadinglist': {
@@ -29,29 +30,47 @@ Ext.define('Wodu.controller.BooksReading', {
         }
     },
 
+    onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
+      if (oldValue.isXType('booksreadinglist')) {
+        theNaviView.down('#userButton').hide();
+      } else if (oldValue.isXType('bookdetails')) {
+        theNaviView.down('#userButton').show();
+      }
+    },
+
     onUserButtonTap: function(theButton, e, eOpts) {
+      var avatar = localStorage.myAvatar;
+      if (!avatar) {
+        avatar = 'http://img3.douban.com/icon/user_normal.jpg';
+      }
+
+      var name = localStorage.myName;
+      if (!name) {
+        name = '你没有设置名字';
+      }
+
       var menu = Ext.create('Ext.Menu', {
-           items: [
-               {
-                xtype: 'image',
-                width: '64px',
-                height: '64px',
-                style: {
-                  'border-radius':'25px',
-                  'margin': '10px auto 10px auto'
-                },
-                src: localStorage.myAvatar
-               },
-               {
-                  xtype: 'component',
-                  html: '<div style="color:white;margin:10px auto 15px auto;text-align:center">' + localStorage.myName + '</div>'
-               },
-               {
-                   text: '退出登陆',
-                   ui: 'decline',
-                   itemId: 'logoutButton'
-               }
-           ]
+         items: [
+           {
+              xtype: 'image',
+              width: '64px',
+              height: '64px',
+              style: {
+                'border-radius':'25px',
+                'margin': '10px auto 10px auto'
+              },
+              src: avatar
+           },
+           {
+              xtype: 'component',
+              html: '<div style="color:white;margin:10px auto 15px auto;text-align:center">' + name + '</div>'
+           },
+           {
+               text: '退出登陆',
+               ui: 'decline',
+               itemId: 'logoutButton'
+           }
+         ]
        });
 
        Ext.Viewport.setMenu(menu, {side: 'left'});

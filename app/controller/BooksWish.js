@@ -5,11 +5,11 @@ Ext.define('Wodu.controller.BooksWish', {
       'Wodu.view.BookDetails',
       'Wodu.view.BooksWishList',
       'Wodu.view.BooksWishNaviView'
-    ],       
+    ],
 
     config: {
         refs: {
-            theNaviView: 'bookswishnaviview'            
+            theNaviView: 'bookswishnaviview'
         },
 
         control: {
@@ -19,21 +19,21 @@ Ext.define('Wodu.controller.BooksWish', {
             },
 
             'bookswishlist': {
-              itemtap: 'onBooksWishlistItemTap' 
+              itemtap: 'onBooksWishlistItemTap'
             }
-        } 
+        }
     },
 
     onNaviViewInit: function(theNaviView, eOpts) {
       Wodu.util.Util.handleNaviBarTitleChange(theNaviView, Ext.getStore('BooksWishStore'));
-    },    
+    },
 
-    onNaviViewShow: function(theNaviView, eOpts) {        
-      var store = Ext.getStore('BooksWishStore');   
+    onNaviViewShow: function(theNaviView, eOpts) {
+      var store = Ext.getStore('BooksWishStore');
       if (0 === store.getCount()) {
         Wodu.util.Util.getBookCollections(
-          'wish', 
-          store, 
+          'wish',
+          store,
           null,
           null // fail
         );
