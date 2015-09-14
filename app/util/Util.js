@@ -56,12 +56,6 @@ Ext.define('Wodu.util.Util', {
     },
 
     logout: function() {
-      localStorage.removeItem('myToken');
-      localStorage.removeItem('myId');
-      localStorage.removeItem('myRefreshToken');
-      localStorage.removeItem('myName');
-      localStorage.removeItem('myAvatar');
-
       // activeItem: 0, Index; 1, main
       Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
     },
@@ -90,6 +84,26 @@ Ext.define('Wodu.util.Util', {
           callBackIfNotExpired(response);
         }
       }
+    },
+
+    renewMyToken: function(refreshToken) {
+      var me = this;
+      $.ajax({
+          url: 'https://www.douban.com/service/auth2/token',
+          method: 'POST',
+          data: 'client_id=' + me.myApikey
+                + '&client_secret=' + me.mySecret
+                + '&redirect_uri=http://aikanshu.sinaapp.com&grant_type=refresh_token'
+                + '&refresh_token=' + refreshToken,
+      }).done(function(respnose) {
+          localStorage.myToken = response.access_token;
+          localStorage.myRefreshToken = response.refresh_token;
+
+          me.getCurrentUserInfo();
+      }).fail(function(response) {
+        Ext.Msg.alert('出错啦', '无法帮您自动登录，请试试手动登录。');
+        me.logout();
+      });
     },
 
     // oauth2 with douban
@@ -135,7 +149,6 @@ Ext.define('Wodu.util.Util', {
           method: 'GET',
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
       }).done(function(response) {
-        console.log(response);
         localStorage.myAvatar = response.avatar;
       }).fail(function(response) {
         me.checkIfAccessTokenExpired(response, failure);

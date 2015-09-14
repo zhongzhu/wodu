@@ -12,7 +12,6 @@ Ext.define('Wodu.view.BookDetails', {
     ],
 
     config: {
-        scrollable: null,
         style: 'font-family:Helvetica,sans-serif;',
         items: [
             {

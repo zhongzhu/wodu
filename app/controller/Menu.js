@@ -1,6 +1,6 @@
 Ext.define('Wodu.controller.Menu', {
     extend: 'Ext.app.Controller',
-    
+
     config: {
         refs: {
             theMenu: 'menu'
@@ -8,14 +8,20 @@ Ext.define('Wodu.controller.Menu', {
 
         control: {
             'menu #logoutButton': {
-              tap: 'logout' 
+              tap: 'logout'
             }
-        } 
+        }
     },
 
     logout: function(theButton, e, eOpts) {
-        Ext.Viewport.hideMenu('left');
-        Wodu.util.Util.logout();
+      localStorage.removeItem('myToken');
+      localStorage.removeItem('myId');
+      localStorage.removeItem('myRefreshToken');
+      localStorage.removeItem('myName');
+      localStorage.removeItem('myAvatar');
+
+      Ext.Viewport.hideMenu('left');
+      Wodu.util.Util.logout();
     }
 
 });
