@@ -33,8 +33,10 @@ Ext.define('Wodu.controller.BooksReading', {
     onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
       if (oldValue.isXType('booksreadinglist')) {
         theNaviView.down('#userButton').hide();
+        theNaviView.down('#readButton').show();
       } else if (oldValue.isXType('bookdetails')) {
         theNaviView.down('#userButton').show();
+        theNaviView.down('#readButton').hide();
       }
     },
 
@@ -100,7 +102,6 @@ Ext.define('Wodu.controller.BooksReading', {
 
       bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));
       bookDetailsView.down('#book_title').setRecord(record);
-      bookDetailsView.down('#bookdetails_actionbutton').setText('已看完');
 
       this.getTheNaviView().push(bookDetailsView);
     }

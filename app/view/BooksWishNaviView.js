@@ -6,10 +6,23 @@ Ext.define('Wodu.view.BooksWishNaviView', {
       'Wodu.view.BooksWishList'
     ],
 
-	myTitle: '我想读的书', 
+	myTitle: '我想读的书',
 
     config: {
     	defaultBackButtonText: '返回',
-        items: [{xtype: 'bookswishlist'}]      
+        navigationBar: {
+          docked: 'top',
+          items: [
+              {
+                xtype: 'button',
+                align: 'right',
+                text: '开始看',
+                ui: 'confirm',
+                hidden: true,
+                itemId: 'readingButton'
+              }
+          ]
+        },
+        items: [{xtype: 'bookswishlist'}]
     }
 });

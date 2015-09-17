@@ -28,7 +28,7 @@ Ext.define('Wodu.view.BooksWishList', {
               loaded.getList().getStore().loadPage(1);
             }
         }
-      ],          
+      ],
 
       itemTpl: [
         '<div class="img" style="background-image:url({book.image}); display:inline-block; width: 90px; height: 113px; background-repeat: no-repeat;background-size:100%;background-position:50%; float:left; margin-right:10px;"></div>',
@@ -36,6 +36,6 @@ Ext.define('Wodu.view.BooksWishList', {
           '<div class="title" style="font-size:13px; font-weight:bold;">{book.title}</div>',
           '<div style="color:#666;margin:10px 0 10px 0">{book.author}</div>',
           '<div style="color:#666">{updated:date("Y-m-d")}那天想看这本书</div>',
-        '</div>']                                 
+        '</div>']
     }
 });

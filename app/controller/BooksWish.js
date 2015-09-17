@@ -15,13 +15,22 @@ Ext.define('Wodu.controller.BooksWish', {
         control: {
             theNaviView: {
                 initialize: 'onNaviViewInit',
-                show: 'onNaviViewShow'
+                show: 'onNaviViewShow',
+                activeitemchange: 'onNaviViewActiveItemChange'
             },
 
             'bookswishlist': {
               itemtap: 'onBooksWishlistItemTap'
             }
         }
+    },
+
+    onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
+      if (oldValue.isXType('bookswishlist')) {
+        theNaviView.down('#readingButton').show();
+      } else if (oldValue.isXType('bookdetails')) {
+        theNaviView.down('#readingButton').hide();
+      }
     },
 
     onNaviViewInit: function(theNaviView, eOpts) {
@@ -46,7 +55,6 @@ Ext.define('Wodu.controller.BooksWish', {
 
       bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));
       bookDetailsView.down('#book_title').setRecord(record);
-      bookDetailsView.down('#bookdetails_actionbutton').setText('开始看');
 
       this.getTheNaviView().push(bookDetailsView);
     }

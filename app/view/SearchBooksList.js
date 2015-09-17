@@ -7,7 +7,7 @@ Ext.define('Wodu.view.SearchBooksList', {
         'Ext.plugin.ListPaging'
     ],
 
-    config: {      
+    config: {
       disableSelection: true,
       itemHeight: '135px',
       variableHeights: false,
@@ -19,7 +19,7 @@ Ext.define('Wodu.view.SearchBooksList', {
         autoPaging: true,
         loadMoreText: '加载更多...',
         noMoreRecordsText: '到头啦'
-      }],          
+      }],
 
       itemTpl: [
             '<div class="book_info_title">',
@@ -38,10 +38,10 @@ Ext.define('Wodu.view.SearchBooksList', {
                         '<div style="margin-top:4px"><span style="color:blue;">本书我已"想读"</span></div>',
                       '<tpl case="read">',
                         '<div style="margin-top:4px"><span style="color:blue;">本书我已"读过"</span></div>',
-                    '</tpl>',                    
+                    '</tpl>',
                   '</tpl>',
                 '</div>',
-            '</div>'              
-      ]                                 
+            '</div>'
+      ]
     }
 });

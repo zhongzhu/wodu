@@ -5,7 +5,7 @@ Ext.define('Wodu.controller.BooksRead', {
       'Wodu.view.BookDetails',
       'Wodu.view.BooksReadList',
       'Wodu.view.BooksReadNaviView'
-    ],       
+    ],
 
     config: {
         refs: {
@@ -15,25 +15,34 @@ Ext.define('Wodu.controller.BooksRead', {
         control: {
             theNaviView: {
                 initialize: 'onNaviViewInit',
-                show: 'onNaviViewShow'
+                show: 'onNaviViewShow',
+                activeitemchange: 'onNaviViewActiveItemChange'
             },
 
             'booksreadlist': {
-              itemtap: 'onlistItemTap' 
+              itemtap: 'onlistItemTap'
             }
-        } 
+        }
+    },
+
+    onNaviViewActiveItemChange: function(theNaviView, value, oldValue, eOpts) {
+      if (oldValue.isXType('booksreadlist')) {
+        theNaviView.down('#readAgainButton').show();
+      } else if (oldValue.isXType('bookdetails')) {
+        theNaviView.down('#readAgainButton').hide();
+      }
     },
 
     onNaviViewInit: function(theNaviView, eOpts) {
       Wodu.util.Util.handleNaviBarTitleChange(theNaviView, Ext.getStore('BooksReadStore'));
-    },    
+    },
 
-    onNaviViewShow: function(theNaviView, eOpts) {        
-      var store = Ext.getStore('BooksReadStore');  
+    onNaviViewShow: function(theNaviView, eOpts) {
+      var store = Ext.getStore('BooksReadStore');
       if (0 === store.getCount()) {
         Wodu.util.Util.getBookCollections(
-          'read', 
-          store, 
+          'read',
+          store,
           null, // done
           null // fail
         );
@@ -46,8 +55,7 @@ Ext.define('Wodu.controller.BooksRead', {
 
       bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));
       bookDetailsView.down('#book_title').setRecord(record);
-      bookDetailsView.down('#bookdetails_actionbutton').setText('再看一遍');
-      bookDetailsView.down('#bookdetails_deletebutton').hide();
+      bookDetailsView.down('#deleteButton').hide();
 
       this.getTheNaviView().push(bookDetailsView);
     }

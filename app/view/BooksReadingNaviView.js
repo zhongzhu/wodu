@@ -18,6 +18,14 @@ Ext.define('Wodu.view.BooksReadingNaviView', {
             align: 'left',
             itemId: 'userButton',
             iconCls: 'user'
+          },
+          {
+            xtype: 'button',
+            align: 'right',
+            text: '已看完',
+            ui: 'confirm',
+            hidden: true,
+            itemId: 'readButton'
           }
       ]
     },

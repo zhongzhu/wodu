@@ -16,7 +16,7 @@ Ext.define('Wodu.view.BookDetails', {
         items: [
             {
                 xtype: 'label',
-                height: '170px',
+                height: '165px',
                 margin: '10px 5px 0 5px',
                 itemId: 'book_title',
                 name: 'title',
@@ -27,37 +27,28 @@ Ext.define('Wodu.view.BookDetails', {
                           '<div class="title" style="font-weight:bold;font-size:13px;">{book.title}</div>',
                           '<div style="margin-top:10px"><span style="color:#666;">作者:   </span>{book.author}</div>',
                           '<div style="margin-top:2px"><span style="color:#666;">出版商: </span>{book.publisher}</div>',
-                          '<div style="margin-top:2px"><span style="color:#666;">出版:   </span>{book.pubdate}</div>',
-                          '<div style="margin-top:2px"><span style="color:#666;">页数:   </span>{book.pages}</div>',
+                          '<div style="margin-top:2px"><span style="color:#666;">出版:   </span>{book.pubdate}  <span style="color:#666;">/ 页数:   </span>{book.pages}</div>',
                           '<div style="margin-top:2px"><span style="color:#666;">价格:   </span>{book.price}</div>',
                           '<div style="margin-top:4px"><span style="color:#666;">评价:   </span>{book.rating.average}/10</div>',
                         '</div>',
                     '</div>'
-                ].join('')                  
+                ].join('')
             },
             {
                 xtype: 'textareafield',
                 style: 'font-size: 13px; margin: 0 .5em 0 .5em;',
                 clearIcon: false,
                 readOnly: true,
-                height: '170px',
+                height: '185px',
                 name: 'summary',
                 placeHolder: '没有内容简介'
             },
-           {
-                margin: '1em .5em .5em .5em',
+            {
+                margin: '20 10 0 10',
                 xtype: 'button',
-                itemId: 'bookdetails_actionbutton',
-                ui: 'confirm-round',
-                text: '已看完'
-            },
-           {
-                margin: '0 .5em 0 .5em',
-                xtype: 'button',
-                itemId: 'bookdetails_deletebutton',
-                ui: 'decline-round',
+                itemId: 'deleteButton',
                 text: '不看了'
-            }            
+            }
         ]
     }
 
