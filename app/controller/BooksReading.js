@@ -41,15 +41,8 @@ Ext.define('Wodu.controller.BooksReading', {
     },
 
     onUserButtonTap: function(theButton, e, eOpts) {
-      var avatar = localStorage.myAvatar;
-      if (!avatar) {
-        avatar = 'http://img3.douban.com/icon/user_normal.jpg';
-      }
-
-      var name = localStorage.myName;
-      if (!name) {
-        name = '你没有设置名字';
-      }
+      var avatar = Wodu.util.Util.getMyAvatar();
+      var name = Wodu.util.Util.getMyName();
 
       var menu = Ext.create('Ext.Menu', {
          items: [

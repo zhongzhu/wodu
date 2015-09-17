@@ -4,6 +4,24 @@ Ext.define('Wodu.util.Util', {
     myApikey: 'xxx', // put your douban apikey here
     mySecret: 'yyy', // put your douban secret here
 
+    getMyAvatar: function() {
+      var avatar = localStorage.myAvatar;
+      if (!avatar) {
+        avatar = 'http://img3.douban.com/icon/user_normal.jpg';
+      }
+
+      return avatar;
+    },
+
+    getMyName: function() {
+      var name = localStorage.myName;
+      if (!name) {
+        name = '你没有设置名字';
+      }
+
+      return name;
+    },
+
     handleNaviBarTitleChange: function(theNaviView, store) {
       store.on({
         load: function(theStore, records, successful, operation, eOpts) {
