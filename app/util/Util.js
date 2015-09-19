@@ -74,7 +74,24 @@ Ext.define('Wodu.util.Util', {
     },
 
     logout: function() {
-      // activeItem: 0, Index; 1, main
+      localStorage.removeItem('myToken');
+      localStorage.removeItem('myId');
+      localStorage.removeItem('myRefreshToken');
+      localStorage.removeItem('myName');
+      localStorage.removeItem('myAvatar');
+
+      Ext.getStore('BooksReadingStore').removeAll();
+      Ext.getStore('BooksWishStore').removeAll();
+      Ext.getStore('BooksReadStore').removeAll();
+      Ext.getStore('SearchBooksStore').removeAll();    
+      
+      var main = Ext.Viewport.down('main');
+      main.setActiveItem(0); // BooksReadingNaviView  
+
+      Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
+    },
+
+    prepareForAutoReLogin: function() {
       Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
     },
 
@@ -94,7 +111,7 @@ Ext.define('Wodu.util.Util', {
         // invalid_access_token: undefined, 103
         Ext.Msg.alert('出错啦', '你的豆瓣网登录已超时，请重新登录。');
 
-        me.logout();
+        me.prepareForAutoReLogin();
       } else {
         if (callBackIfNotExpired === undefined) {
           Ext.Msg.alert('出错啦',resp.msg);

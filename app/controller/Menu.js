@@ -14,14 +14,8 @@ Ext.define('Wodu.controller.Menu', {
     },
 
     logout: function(theButton, e, eOpts) {
-      localStorage.removeItem('myToken');
-      localStorage.removeItem('myId');
-      localStorage.removeItem('myRefreshToken');
-      localStorage.removeItem('myName');
-      localStorage.removeItem('myAvatar');
-
       Ext.Viewport.hideMenu('left');
-      Wodu.util.Util.logout();
+      Wodu.util.Util.logout();     
     }
 
 });

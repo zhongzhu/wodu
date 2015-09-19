@@ -16,7 +16,7 @@ Ext.define('Wodu.controller.Login', {
     login: function(theButton, e, eOpts) {
         var me = this;
 
-        // renew my access token
+        // auto-renew my access token
         if (localStorage.myToken && localStorage.myRefreshToken) {
             Wodu.util.Util.renewMyToken(localStorage.myRefreshToken);
         } else {
@@ -26,12 +26,12 @@ Ext.define('Wodu.controller.Login', {
                     var main = Ext.Viewport.down('main');
                     if (main) {
                         // re-login, need to clear the states
-                        Ext.getStore('BooksReadingStore').removeAll();
-                        Ext.getStore('BooksWishStore').removeAll();
-                        Ext.getStore('BooksReadStore').removeAll();
-                        Ext.getStore('SearchBooksStore').removeAll();
+                        // Ext.getStore('BooksReadingStore').removeAll();
+                        // Ext.getStore('BooksWishStore').removeAll();
+                        // Ext.getStore('BooksReadStore').removeAll();
+                        // Ext.getStore('SearchBooksStore').removeAll();
 
-                        main.setActiveItem(0);//BooksReadingNaviView
+                        // main.setActiveItem(0);//BooksReadingNaviView
                     } else {
                         main = Ext.create('Wodu.view.Main');
                         Ext.Viewport.add(main);
