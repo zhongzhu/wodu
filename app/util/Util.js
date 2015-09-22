@@ -93,7 +93,8 @@ Ext.define('Wodu.util.Util', {
       Ext.getStore('BooksReadStore').removeAll();
       Ext.getStore('SearchBooksStore').removeAll();
 
-      this.resetNaviBarTitles();
+      var main = Ext.Viewport.down('main');
+      main.setActiveItem(0); // BooksReadingNaviView
 
       Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
     },
