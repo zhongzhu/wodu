@@ -33,13 +33,7 @@ Ext.define('Wodu.util.Util', {
       });
     },
 
-    /**
-     * 我在读的书(23)
-     * 我想读的书(25)
-     * 我读过的书(173)
-    **/
-    showNaviBarTitle: function(theNaviView, theStore) {
-      var title = theNaviView.myTitle + '(' + theStore.getTotalCount() + ')';
+    setNaviBarTitle: function(theNaviView, title) {
       var navBar = theNaviView.getNavigationBar();
       if (theNaviView.getInnerItems().length === navBar.backButtonStack.length) {
         var stack = navBar.backButtonStack;
@@ -48,17 +42,22 @@ Ext.define('Wodu.util.Util', {
       }
     },
 
+    /**
+     * 我在读的书(23)
+     * 我想读的书(25)
+     * 我读过的书(173)
+    **/
+    showNaviBarTitle: function(theNaviView, theStore) {
+      var title = theNaviView.myTitle + '(' + theStore.getTotalCount() + ')';
+      this.setNaviBarTitle(theNaviView, title);
+    },
+
     resetNaviBarTitles: function() {
       var naviViews = Ext.ComponentQuery.query('navigationview[myTitle]');
       var title = '';
 
       naviViews.map(function(theNaviView) {
-        var navBar = theNaviView.getNavigationBar();
-        if (theNaviView.getInnerItems().length === navBar.backButtonStack.length) {
-          var stack = navBar.backButtonStack;
-          stack[stack.length - 1] = title;
-          navBar.setTitle(title);
-        }
+        this.setNaviBarTitle(theNaviView, title);
       });
     },
 
