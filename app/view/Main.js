@@ -1,7 +1,7 @@
 Ext.define('Wodu.view.Main', {
     extend: 'Ext.tab.Panel',
     xtype: 'main',
-    
+
     config: {
         style: 'font-family:Helvetica,sans-serif;',
 
@@ -13,7 +13,7 @@ Ext.define('Wodu.view.Main', {
             {
                 xtype: 'booksreadingnaviview',
                 title: '在读',
-                iconCls: 'time'                
+                iconCls: 'time'
             },
 
             {
@@ -21,13 +21,13 @@ Ext.define('Wodu.view.Main', {
                 title: '想读',
                 iconCls: 'star'
             },
-            
+
             {
                 xtype: 'booksreadnaviview',
                 title: '读过',
                 iconCls: 'organize'
             },
-            
+
             {
                 xtype: 'searchbooksnaviview',
                 title: '新书',

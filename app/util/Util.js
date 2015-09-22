@@ -5,21 +5,11 @@ Ext.define('Wodu.util.Util', {
     mySecret: 'yyy', // put your douban secret here
 
     getMyAvatar: function() {
-      var avatar = localStorage.myAvatar;
-      if (!avatar) {
-        avatar = 'http://img3.douban.com/icon/user_normal.jpg';
-      }
-
-      return avatar;
+      return (localStorage.myAvatar)? localStorage.myAvatar: 'http://img3.douban.com/icon/user_normal.jpg';
     },
 
     getMyName: function() {
-      var name = localStorage.myName;
-      if (!name) {
-        name = '你没有设置名字';
-      }
-
-      return name;
+      return (localStorage.myName)? localStorage.myName: '你没有设置名字';
     },
 
     handleNaviBarTitleChange: function(theNaviView, store) {
@@ -58,6 +48,20 @@ Ext.define('Wodu.util.Util', {
       }
     },
 
+    resetNaviBarTitles: function() {
+      var naviViews = Ext.ComponentQuery.query('navigationview[myTitle]');
+      var title = '';
+
+      naviViews.map(function(theNaviView) {
+        var navBar = theNaviView.getNavigationBar();
+        if (theNaviView.getInnerItems().length === navBar.backButtonStack.length) {
+          var stack = navBar.backButtonStack;
+          stack[stack.length - 1] = title;
+          navBar.setTitle(title);
+        }
+      });
+    },
+
     login: function() {
       var login = Ext.create('Wodu.view.Login');
 
@@ -73,8 +77,24 @@ Ext.define('Wodu.util.Util', {
       }
     },
 
-    logout: function() {
-      // activeItem: 0, Index; 1, main
+    letsTryAutoRenewTokenForUser: function() {
+      Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
+    },
+
+    letUserLoginManually: function() {
+      localStorage.removeItem('myToken');
+      localStorage.removeItem('myId');
+      localStorage.removeItem('myRefreshToken');
+      localStorage.removeItem('myName');
+      localStorage.removeItem('myAvatar');
+
+      Ext.getStore('BooksReadingStore').removeAll();
+      Ext.getStore('BooksWishStore').removeAll();
+      Ext.getStore('BooksReadStore').removeAll();
+      Ext.getStore('SearchBooksStore').removeAll();
+
+      this.resetNaviBarTitles();
+
       Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
     },
 
@@ -94,7 +114,7 @@ Ext.define('Wodu.util.Util', {
         // invalid_access_token: undefined, 103
         Ext.Msg.alert('出错啦', '你的豆瓣网登录已超时，请重新登录。');
 
-        me.logout();
+        me.letsTryAutoRenewTokenForUser();
       } else {
         if (callBackIfNotExpired === undefined) {
           Ext.Msg.alert('出错啦',resp.msg);
@@ -120,7 +140,7 @@ Ext.define('Wodu.util.Util', {
           me.getCurrentUserInfo();
       }).fail(function(response) {
         Ext.Msg.alert('出错啦', '无法帮您自动登录，请试试手动登录。');
-        me.logout();
+        me.letUserLoginManually();
       });
     },
 
@@ -153,6 +173,8 @@ Ext.define('Wodu.util.Util', {
 
         function(error, response){ // failure
           localStorage.removeItem('myToken');
+          localStorage.removeItem('myRefreshToken');
+
           failure();
       });
     },
