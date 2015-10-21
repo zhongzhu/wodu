@@ -18,5 +18,4 @@ Ext.define('Wodu.controller.Menu', {
 
       Wodu.util.Util.letUserLoginManually();
     }
-
 });

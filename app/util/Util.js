@@ -5,11 +5,11 @@ Ext.define('Wodu.util.Util', {
     mySecret: 'yyy', // put your douban secret here
 
     getMyAvatar: function() {
-      return (localStorage.myAvatar)? localStorage.myAvatar: 'http://img3.douban.com/icon/user_normal.jpg';
+      return (localStorage.myAvatar || 'http://img3.douban.com/icon/user_normal.jpg');
     },
 
     getMyName: function() {
-      return (localStorage.myName)? localStorage.myName: '你没有设置名字';
+      return (localStorage.myName || '你没有设置名字');
     },
 
     handleNaviBarTitleChange: function(theNaviView, store) {
@@ -124,15 +124,22 @@ Ext.define('Wodu.util.Util', {
       }
     },
 
-    renewMyToken: function(refreshToken) {
+    renewMyToken: function(success, failure) {
       var me = this;
+
+      if (!localStorage.myToken || !localStorage.myRefreshToken) {
+        failure();
+      }
+
       $.ajax({
           url: 'https://www.douban.com/service/auth2/token',
           method: 'POST',
           data: 'client_id=' + me.myApikey
                 + '&client_secret=' + me.mySecret
-                + '&redirect_uri=http://aikanshu.sinaapp.com&grant_type=refresh_token'
-                + '&refresh_token=' + refreshToken,
+                + '&redirect_uri=http://aikanshu.sinaapp.com'
+                + '&grant_type=refresh_token'
+                + '&refresh_token=' + localStorage.myRefreshToken,
+          headers: {Authorization: 'Bearer ' + localStorage.myToken}
       }).done(function(respnose) {
           localStorage.myToken = response.access_token;
           localStorage.myRefreshToken = response.refresh_token;
