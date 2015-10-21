@@ -69,6 +69,10 @@
            "x-compile": true
         },
         {
+           "path": "app/util/lodash.min.js",
+           "x-compile": true
+        },
+        {
            "path": "app/util/bluebird.min.js",
            "x-compile": true
         },
