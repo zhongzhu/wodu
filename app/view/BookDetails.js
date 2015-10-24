@@ -3,12 +3,8 @@ Ext.define('Wodu.view.BookDetails', {
     xtype: 'bookdetails',
 
     requires: [
-        'Ext.Img',
         'Ext.Label',
-        'Ext.form.FieldSet',
         'Ext.field.TextArea',
-        'Ext.field.Radio',
-        'Ext.field.Hidden'
     ],
 
     config: {
@@ -17,7 +13,7 @@ Ext.define('Wodu.view.BookDetails', {
             {
                 xtype: 'label',
                 height: '165px',
-                margin: '10px 5px 0 5px',
+                margin: '5',
                 itemId: 'book_title',
                 name: 'title',
                 tpl: [
@@ -25,7 +21,7 @@ Ext.define('Wodu.view.BookDetails', {
                         '<div class="img" style="background-image:url({book.image}); display:inline-block; width: 110px; height: 140px; background-repeat: no-repeat;background-size:100%;background-position:50%; float:left; margin-right:10px;"></div>',
                         '<div class="content" style="font-size:10px;">',
                           '<div class="title" style="font-weight:bold;font-size:13px;">{book.title}</div>',
-                          '<div style="margin-top:10px"><span style="color:#666;">作者:   </span>{book.author}</div>',
+                          '<div style="margin-top:5px"><span style="color:#666;">作者:   </span>{book.author}</div>',
                           '<div style="margin-top:2px"><span style="color:#666;">出版商: </span>{book.publisher}</div>',
                           '<div style="margin-top:2px"><span style="color:#666;">出版:   </span>{book.pubdate}  <span style="color:#666;">/ 页数:   </span>{book.pages}</div>',
                           '<div style="margin-top:2px"><span style="color:#666;">价格:   </span>{book.price}</div>',
@@ -36,17 +32,18 @@ Ext.define('Wodu.view.BookDetails', {
             },
             {
                 xtype: 'textareafield',
-                style: 'font-size: 13px; margin: 0 .5em 0 .5em;',
+                style: 'font-size: 13px;',
                 clearIcon: false,
                 readOnly: true,
                 height: '185px',
                 name: 'summary',
                 placeHolder: '没有内容简介'
-            },
+            },            
             {
-                margin: '20 10 0 10',
+                margin: '5',
                 xtype: 'button',
                 itemId: 'deleteButton',
+                // flex: 1,
                 text: '不看了'
             }
         ]
