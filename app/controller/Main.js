@@ -13,16 +13,9 @@ Ext.define('Wodu.controller.Main', {
     },
 
     onMainShow: function(theMainTabPanel, eOpts) {
-      // show the reading book list
       var store = Ext.getStore('BooksReadingStore');
-
       if (0 === store.getCount()) {
-        Wodu.util.Util.getBookCollections(
-          'reading',
-          store,
-          null,
-          null // fail
-        );
+        Wodu.util.Util.getBookCollections('reading', store);
       }
     }
 

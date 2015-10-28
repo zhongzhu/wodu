@@ -40,14 +40,8 @@ Ext.define('Wodu.controller.BooksWish', {
     onNaviViewShow: function(theNaviView, eOpts) {
       var store = Ext.getStore('BooksWishStore');
       if (0 === store.getCount()) {
-        Wodu.util.Util.getBookCollections(
-          'wish',
-          store,
-          null,
-          null // fail
-        );
+        Wodu.util.Util.getBookCollections('wish', store);
       }
-
     },
 
     onBooksWishlistItemTap: function(theList, index, target, record, e, eOpts) {

@@ -59,11 +59,8 @@ Ext.define('Wodu.controller.BookDetails', {
       var record = this.getBookDetails().down('#book_title').getRecord();
       var bookId = record.data.book.id;
 
-      // Books read
-      Wodu.util.Util.changeBookCollectionStatus(
-        bookId,
-        'wish',
-        function(response) {
+      Wodu.util.Util.changeBookCollectionStatus(bookId, 'wish')
+      .then(function(response) {
           Ext.getStore('BooksReadStore').remove(record);
 
           var toStore = Ext.getStore('BooksWishStore');
@@ -72,39 +69,26 @@ Ext.define('Wodu.controller.BookDetails', {
           }
 
           theButton.up('navigationview').pop();
-        },
-
-        function(response) {
-          Ext.Msg.alert('出错了', '无法改变成想读状态');
-        }
-      );
+      }).then(undefined, function(e) {  
+          Ext.Msg.alert('出错了', e.message);
+      }); 
     },
 
     iWishToReadTheBook: function(theButton, e, eOpts) {
       var record = this.getBookDetails().down('#book_title').getRecord();
       var bookId = record.data.book.id;
 
-      Wodu.util.Util.addBookToCollection(
-        bookId,
-        function(response) { // done
+      Wodu.util.Util.addBookToCollection(bookId)
+      .then(function(response) {
           var toStore = Ext.getStore('BooksWishStore');
           if (toStore.getCount() > 0) {
               toStore.insert(0, Ext.create('Wodu.model.ReadingInfo', response));
           }
 
           theButton.up('navigationview').pop();
-        },
-
-        function(response) { // fail
-          var resp = response.responseJSON;
-          if (resp.code === 6011) {
-            // collection_exist(try PUT if you want to update, 6011
-            Ext.Msg.alert('出错了', '你已经加过这本书了，不能重复加。');
-          } else {
-            Ext.Msg.alert('出错了', '无法改变成想读状态。');
-          }
-        }
-      );
+      }).then(undefined, function(e) {
+            Ext.Msg.alert('出错了', e.message);
+      });
     },
 
     iHaveReadTheBook: function(theButton, e, eOpts) {
@@ -112,10 +96,8 @@ Ext.define('Wodu.controller.BookDetails', {
       var bookId = record.data.book.id;
 
       // Books Reading
-      Wodu.util.Util.changeBookCollectionStatus(
-        bookId,
-        'read',
-        function(response) { // done
+      Wodu.util.Util.changeBookCollectionStatus(bookId, 'read')
+      .then(function(response) {
           Ext.getStore('BooksReadingStore').remove(record);
 
           var toStore = Ext.getStore('BooksReadStore');
@@ -124,23 +106,17 @@ Ext.define('Wodu.controller.BookDetails', {
           }
 
           theButton.up('navigationview').pop();
-        },
-
-        function(response) { // fail
-            Ext.Msg.alert('出错了', '无法改变成已读状态');
-        }
-      );
+      }).then(undefined, function(e) {
+            Ext.Msg.alert('出错了', e.message);
+      });      
     },
 
     iAmReadingTheBook: function(theButton, e, eOpts) {
       var record = this.getBookDetails().down('#book_title').getRecord();
       var bookId = record.data.book.id;
 
-      // Books Wish
-      Wodu.util.Util.changeBookCollectionStatus(
-        bookId,
-        'reading',
-        function(response) {
+      Wodu.util.Util.changeBookCollectionStatus(bookId, 'reading')
+      .then(function(response) {
           Ext.getStore('BooksWishStore').remove(record);
 
           var toStore = Ext.getStore('BooksReadingStore');
@@ -149,12 +125,9 @@ Ext.define('Wodu.controller.BookDetails', {
           }
 
           theButton.up('navigationview').pop();
-        },
-
-        function(response) {
-            Ext.Msg.alert('出错了', '无法改变成正在读状态');
-        }
-      );
+      }).then(undefined, function(e) {
+            Ext.Msg.alert('出错了', e.message);
+      });
     },
 
     onBookDetailsPanelDestroy: function(eOpts) {
@@ -170,9 +143,8 @@ Ext.define('Wodu.controller.BookDetails', {
       var record = this.getBookDetails().down('#book_title').getRecord();
       var bookId = record.data.book.id;
 
-      Wodu.util.Util.deleteBookFromCollection(
-        bookId,
-        function(response) { // done
+      Wodu.util.Util.deleteBookFromCollection(bookId)
+      .then(function(response) {
           var theNaviView = theButton.up('navigationview');
 
           if (theNaviView.isXType('booksreadingnaviview')) {
@@ -182,13 +154,9 @@ Ext.define('Wodu.controller.BookDetails', {
           }
 
           theNaviView.pop();
-        },
-
-        function(response) { // fail
-          Ext.Msg.alert('出错了', '无法删除这本书');
-        }
-      );
-
+      }).then(undefined, function(e) {
+        Ext.Msg.alert('无法删除这本书', e.message);
+      });
     }
 
 });

@@ -1,8 +1,8 @@
 Ext.define('Wodu.util.Util', {
     singleton: true,
 
-    myApikey: 'xxx', // put your douban apikey here
-    mySecret: 'yyy', // put your douban secret here
+    myApikey: '0d8bbcbe916a9aec28a3363bb43fd0c4', // put your douban apikey here
+    mySecret: '7d5e2e16976b6d4a', // put your douban secret here
 
     getMyAvatar: function() {
       return (localStorage.myAvatar || 'http://img3.douban.com/icon/user_normal.jpg');
@@ -17,8 +17,6 @@ Ext.define('Wodu.util.Util', {
         load: function(theStore, records, successful, operation, eOpts) {
           if (successful) {
             this.showNaviBarTitle(theNaviView, theStore);
-          } else {
-            Ext.Msg.alert('出错啦', '貌似网络有问题，请试试下拉来重新加载。');
           }
         },
         addrecords: function(theStore, records, eOpts) {
@@ -61,24 +59,43 @@ Ext.define('Wodu.util.Util', {
       });
     },
 
-    login: function() {
-      var login = Ext.create('Wodu.view.Login');
-
-      if (localStorage.myToken === undefined) {
-        // failure
-        Ext.Viewport.add(login);
-      } else {
-        // success
-        var main = Ext.create('Wodu.view.Main');
-        Ext.Viewport.add([login, main]);
-        // activeIndex: 0, login; 1, main
-        Ext.Viewport.animateActiveItem(1, {type: 'slide', direction: 'left'});
-      }
+    isLoggedIn: function() {
+      return localStorage.myToken !== undefined;
     },
 
-    letsTryAutoRenewTokenForUser: function() {
+    needToRefreshMyToken: function() {
+      var ret = (localStorage.renew === 'Yes' && localStorage.myToken && localStorage.myRefreshToken);
+      localStorage.removeItem('renew');
+
+      return ret;
+    },
+
+    letsLaunchTheAPP: function() {
+      // localStorage.myToken = 'b3f7e473c7abf0751be7ad5b5703d15f';
+      // localStorage.myId = '133624903';
+      // localStorage.myRefreshToken = '99f648c430bd78fccde2da4c92386af4';
+      // localStorage.myName = 'aikanshu';
+
+      var me = this;
+      var login = Ext.create('Wodu.view.Login');
+      Ext.Viewport.add(login);
+
+      if (me.isLoggedIn()) me.showMainView();
+    },
+
+    showLoginView: function() {
       Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
     },
+
+    showMainView: function() {
+      var main = Ext.Viewport.down('main');
+      if (!main) {
+          main = Ext.create('Wodu.view.Main');
+          Ext.Viewport.add(main);
+      }
+      
+      Ext.Viewport.animateActiveItem(main, {type: 'slide', direction: 'left'});
+    },    
 
     letUserLoginManually: function() {
       localStorage.removeItem('myToken');
@@ -86,6 +103,7 @@ Ext.define('Wodu.util.Util', {
       localStorage.removeItem('myRefreshToken');
       localStorage.removeItem('myName');
       localStorage.removeItem('myAvatar');
+      localStorage.removeItem('renew');
 
       Ext.getStore('BooksReadingStore').removeAll();
       Ext.getStore('BooksWishStore').removeAll();
@@ -93,112 +111,119 @@ Ext.define('Wodu.util.Util', {
       Ext.getStore('SearchBooksStore').removeAll();
 
       var main = Ext.Viewport.down('main');
-      main.setActiveItem(0); // BooksReadingNaviView
-
-      Ext.Viewport.animateActiveItem(0, {type: 'slide', direction: 'left'});
+      if (main) main.setActiveItem(0); // BooksReadingNaviView
     },
 
-    // check access_token_has_expired from ajax response
-    checkIfAccessTokenExpired: function(response, callBackIfNotExpired) {
+    processAjaxResponseToDetectErrorReason: function(response) {
       var me = this;
 
       // maybe a network issue, no reponse is got from server
-      if (response.status === 0 && response.responseText.length === 0) {
-        Ext.Msg.alert('出错啦', '貌似网络有问题，请重新试试。');
-        return;
+      if (response.status === 0) {
+        throw new Error('貌似网络没有连上？请重新试试。');
       }
 
       var resp = Ext.JSON.decode(response.responseText);
-      if (resp.code === 106 || resp.code === 103) {
-        // access_token_has_expired, 106;
-        // invalid_access_token: undefined, 103
-        Ext.Msg.alert('出错啦', '你的豆瓣网登录已超时，请重新登录。');
-
-        me.letsTryAutoRenewTokenForUser();
-      } else {
-        if (callBackIfNotExpired === undefined) {
-          Ext.Msg.alert('出错啦',resp.msg);
-        } else {
-          callBackIfNotExpired(response);
-        }
+      switch (resp.code) {
+        case 106: // access_token_has_expired
+        case 103: // invalid_access_token: undefined
+          Ext.Msg.alert('出错啦', '你的豆瓣网登录已超时，请重新登录。');
+          localStorage.renew = "Yes";
+          me.showLoginView();
+          break;
+        case 6011: // collection_exist(try PUT if you want to update)
+          throw new Error('你已经加过这本书了，不能重复加。');
+          break;
+        default:
+          throw new Error(resp.msg);
+          break;
       }
     },
 
-    renewMyToken: function(success, failure) {
+    login: function() {
       var me = this;
 
-      if (!localStorage.myToken || !localStorage.myRefreshToken) {
-        failure();
-      }
+      return me.renewMyToken()
+        .then(undefined, function(e) {
+          me.letUserLoginManually();
+          return me.authentication();      
+        }).then(function(response) {
+          // renew or authentication successfull
+          return me.getCurrentUserInfo(response);
+        }).then(undefined, function(e) {
+          throw new Error('登录失败了，请重新登录。');        
+        });
+    },
 
-      $.ajax({
-          url: 'https://www.douban.com/service/auth2/token',
-          method: 'POST',
-          data: 'client_id=' + me.myApikey
-                + '&client_secret=' + me.mySecret
-                + '&redirect_uri=http://aikanshu.sinaapp.com'
-                + '&grant_type=refresh_token'
-                + '&refresh_token=' + localStorage.myRefreshToken,
-          headers: {Authorization: 'Bearer ' + localStorage.myToken}
-      }).done(function(respnose) {
-          localStorage.myToken = response.access_token;
-          localStorage.myRefreshToken = response.refresh_token;
+    renewMyToken: function() {
+      var me = this;
 
-          me.getCurrentUserInfo();
-      }).fail(function(response) {
-        Ext.Msg.alert('出错啦', '无法帮您自动登录，请试试手动登录。');
-        me.letUserLoginManually();
+      return new Promise(function(resolve, reject) {
+        if (me.needToRefreshMyToken()) {
+          $.ajax({
+              url: 'https://www.douban.com/service/auth2/token',
+              method: 'POST',
+              data: 'client_id=' + me.myApikey
+                    + '&client_secret=' + me.mySecret
+                    + '&redirect_uri=http://aikanshu.sinaapp.com'
+                    + '&grant_type=refresh_token'
+                    + '&refresh_token=' + localStorage.myRefreshToken,
+              headers: {Authorization: 'Bearer ' + localStorage.myToken}
+          }).done(function(respnose) {
+            resolve(response);
+          }).fail(function(response) {
+            reject(new Error('自动登录失败'));
+          });
+        } else {
+          reject(new Error('自动登录失败'));
+        }
       });
     },
 
-    // oauth2 with douban
-    authentication: function(success, failure) {
+    //oauth2 with douban
+    authentication: function() {
       var me = this;
 
-      $.oauth2(
-        {
-          auth_url: 'https://www.douban.com/service/auth2/auth',
-          response_type: 'code',      // required - "code"/"token"
-          token_url: 'https://www.douban.com/service/auth2/token',  // required if response_type = 'code'
-          logout_url: '',  // recommended if available
-          client_id: this.myApikey,
-          client_secret: this.mySecret, // required if response_type = 'code'
-          redirect_uri: 'http://aikanshu.sinaapp.com', // required - some dummy url
-          other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}  // optional params object for scope, state, display...
-        },
+      return new Promise(function(resolve, reject) {
+        $.oauth2(
+          {
+            auth_url: 'https://www.douban.com/service/auth2/auth',
+            response_type: 'code',
+            token_url: 'https://www.douban.com/service/auth2/token',
+            logout_url: '',
+            client_id: me.myApikey,
+            client_secret: me.mySecret,
+            redirect_uri: 'http://aikanshu.sinaapp.com',
+            other_params: {scope: 'book_basic_r,book_basic_w,douban_basic_common'}
+          },
 
-        function(token, response) { // success
-          localStorage.myToken = token;
-          localStorage.myId = response.douban_user_id;
-          localStorage.myRefreshToken = response.refresh_token;
-          localStorage.myName = response.douban_user_name;
+          function(token, response) {
+            resolve(response);
+          },
 
-          me.getCurrentUserInfo();
-
-          success();
-        },
-
-        function(error, response){ // failure
-          localStorage.removeItem('myToken');
-          localStorage.removeItem('myRefreshToken');
-
-          failure();
+          function(error, response){
+            reject(new Error(error));
+        });
       });
     },
 
     // 获取当前授权用户信息
     // GET https://api.douban.com/v2/user/~me
-    getCurrentUserInfo: function(success, failure) {
+    getCurrentUserInfo: function(response) {
       var me = this;
 
-      $.ajax({
+      localStorage.myToken = response.access_token;
+      localStorage.myId = response.douban_user_id;
+      localStorage.myRefreshToken = response.refresh_token;
+      localStorage.myName = response.douban_user_name;
+
+      return Promise.resolve($.ajax({
           url: 'https://api.douban.com/v2/user/~me',
           method: 'GET',
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
-      }).done(function(response) {
+      })).then(function(response) {
         localStorage.myAvatar = response.avatar;
-      }).fail(function(response) {
-        me.checkIfAccessTokenExpired(response, failure);
+      }).then(undefined, function(e) {
+        me.processAjaxResponseToDetectErrorReason(response);
       });
     },
 
@@ -218,7 +243,7 @@ Ext.define('Wodu.util.Util', {
       proxy.setUrl('https://api.douban.com/v2/book/search');
       proxy.setHeaders({Authorization: 'Bearer ' + localStorage.myToken});
       proxy.on('exception', function(theProxy, response, operation, eOpts) {
-        me.checkIfAccessTokenExpired(response);
+        me.processAjaxResponseToDetectErrorReason(response);
       });
 
       store.load();
@@ -226,64 +251,64 @@ Ext.define('Wodu.util.Util', {
 
     // 获取某个用户的所有图书收藏信息
     // GET  https://api.douban.com/v2/book/user/:name/collections?status=xx
-    getBookCollections: function(status, store, done, fail) {
+    getBookCollections: function(status, store) {
+      var me = this;
       var proxy = store.getProxy();
+
+      proxy.setUrl('https://api.douban.com/v2/book/user/' + localStorage.myId + '/collections');
       proxy.setExtraParams({
         fields: 'updated,status,id,book_id,book',
         status: status,
         apikey: this.myApikey
       });
-
-      proxy.setUrl('https://api.douban.com/v2/book/user/' + localStorage.myId + '/collections');
+      proxy.on('exception', function(theProxy, response, operation, eOpts) {
+        me.processAjaxResponseToDetectErrorReason(response);
+      });
 
       store.load();
     },
 
     // 用户删除对某本图书的收藏
     // DELETE  https://api.douban.com/v2/book/:id/collection
-    deleteBookFromCollection: function(bookId, done, fail) {
+    deleteBookFromCollection: function(bookId) {
       var me = this;
-
-      $.ajax({
-          url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
-          method: 'DELETE',
-          headers: {Authorization: 'Bearer ' + localStorage.myToken}
-      }).done(done)
-      .fail(function(response) {
-        me.checkIfAccessTokenExpired(response, fail);
+      
+      return Promise.resolve($.ajax({
+        url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
+        method: 'DELETE',
+        headers: {Authorization: 'Bearer ' + localStorage.myToken}
+      })).then(undefined, function(e) {
+        me.processAjaxResponseToDetectErrorReason(response);
       });
-    },
+    },    
 
     // 用户收藏某本图书
     // POST  https://api.douban.com/v2/book/:id/collection&status=wish
-    addBookToCollection: function(bookId, done, fail) {
+    addBookToCollection: function(bookId) {
       var me = this;
 
-      $.ajax({
+      return Promise.resolve($.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
           method: 'POST',
           data: 'status=wish',
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
-      })
-      .done(done)
-      .fail(function(response) {
-        me.checkIfAccessTokenExpired(response, fail);
+      })).then(undefined, function(e) {
+        me.processAjaxResponseToDetectErrorReason(response);
       });
     },
 
     // 用户修改对某本图书的收藏
     // PUT  https://api.douban.com/v2/book/:id/collection?status=xxx
-    changeBookCollectionStatus: function(bookId, status, done, fail) {
+    changeBookCollectionStatus: function(bookId, status) {
       var me = this;
 
-      $.ajax({
+      return Promise.resolve($.ajax({
           url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
           method: 'PUT',
           data: 'status=' + status,
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
-      }).done(done)
-      .fail(function(response) {
-        me.checkIfAccessTokenExpired(response, fail);
+      })).then(undefined, function(e) {  
+        me.processAjaxResponseToDetectErrorReason(response);
       });
     }
 

@@ -40,12 +40,7 @@ Ext.define('Wodu.controller.BooksRead', {
     onNaviViewShow: function(theNaviView, eOpts) {
       var store = Ext.getStore('BooksReadStore');
       if (0 === store.getCount()) {
-        Wodu.util.Util.getBookCollections(
-          'read',
-          store,
-          null, // done
-          null // fail
-        );
+        Wodu.util.Util.getBookCollections('read', store);
       }
 
     },

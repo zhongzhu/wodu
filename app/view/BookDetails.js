@@ -43,7 +43,6 @@ Ext.define('Wodu.view.BookDetails', {
                 margin: '5',
                 xtype: 'button',
                 itemId: 'deleteButton',
-                // flex: 1,
                 text: '不看了'
             }
         ]

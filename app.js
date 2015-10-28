@@ -52,7 +52,7 @@ Ext.application({
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
-        Wodu.util.Util.login();
+        Wodu.util.Util.letsLaunchTheAPP();
     },
 
     onUpdated: function() {
