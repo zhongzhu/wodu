@@ -1,8 +1,8 @@
 Ext.define('Wodu.util.Util', {
     singleton: true,
 
-    myApikey: '0d8bbcbe916a9aec28a3363bb43fd0c4', // put your douban apikey here
-    mySecret: '7d5e2e16976b6d4a', // put your douban secret here
+    myApikey: 'xxx', // put your douban apikey here
+    mySecret: 'yyy', // put your douban secret here
 
     getMyAvatar: function() {
       return (localStorage.myAvatar || 'http://img3.douban.com/icon/user_normal.jpg');
