@@ -71,11 +71,6 @@ Ext.define('Wodu.util.Util', {
     },
 
     letsLaunchTheAPP: function() {
-      // localStorage.myToken = 'b3f7e473c7abf0751be7ad5b5703d15f';
-      // localStorage.myId = '133624903';
-      // localStorage.myRefreshToken = '99f648c430bd78fccde2da4c92386af4';
-      // localStorage.myName = 'aikanshu';
-
       var me = this;
       var login = Ext.create('Wodu.view.Login');
       Ext.Viewport.add(login);
