@@ -13,6 +13,11 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <preference name="Orientation" value="portrait" />
+    <!-- fix the iOS status bar and Shencha navigation bar overlapping issue -->
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarBackgroundColor" value="#000000" />
+    <preference name="StatusBarStyle" value="lightcontent" />
+            
     <platform name="android">
         <allow-intent href="market:*" />
         <preference name="SplashScreen" value="screen" />
@@ -29,11 +34,6 @@
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-
-        <!-- fix the iOS status bar and Shencha navigation bar overlapping issue -->
-        <preference name="StatusBarOverlaysWebView" value="false" />
-        <preference name="StatusBarBackgroundColor" value="#000000" />
-        <preference name="StatusBarStyle" value="lightcontent" />
 
         <!-- iPhone 6 Plus  -->
         <icon src="www/resources/icons/icon-60@3x.png" width="180" height="180" />
@@ -63,8 +63,8 @@
         <!-- iPhone 6 Plus-->
         <splash src="www/resources/startup/Default-736h.png" width="1242" height="2208"/>
     </platform>
-    <plugin name="cordova-plugin-inappbrowser" spec="~1.0.1" />
-    <plugin name="phonegap-plugin-barcodescanner" spec="^4.0.2" />
     <plugin name="cordova-plugin-statusbar" spec="~1.0.1" />
-    <plugin name="cordova-plugin-splashscreen" spec="^2.1.0" />
+    <plugin name="phonegap-plugin-barcodescanner" spec="~4.1.0" />
+    <plugin name="cordova-plugin-splashscreen" spec="~2.1.0" />
+    <plugin name="cordova-plugin-inappbrowser" spec="~1.0.1" />
 </widget>
