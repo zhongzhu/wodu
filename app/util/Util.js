@@ -92,7 +92,7 @@ Ext.define('Wodu.util.Util', {
       Ext.Viewport.animateActiveItem(main, {type: 'slide', direction: 'left'});
     },    
 
-    letUserLoginManually: function() {
+    clearUserData: function() {
       localStorage.removeItem('myToken');
       localStorage.removeItem('myId');
       localStorage.removeItem('myRefreshToken');
@@ -139,7 +139,7 @@ Ext.define('Wodu.util.Util', {
 
       return me.renewMyToken()
         .then(undefined, function(e) {
-          me.letUserLoginManually();
+          me.clearUserData();
           return me.authentication();      
         }).then(function(response) {
           // renew or authentication successfull
@@ -169,7 +169,7 @@ Ext.define('Wodu.util.Util', {
             reject(new Error('自动登录失败'));
           });
         } else {
-          reject(new Error('自动登录失败'));
+          reject(new Error('不具备自动登录条件'));
         }
       });
     },
@@ -215,10 +215,11 @@ Ext.define('Wodu.util.Util', {
           url: 'https://api.douban.com/v2/user/~me',
           method: 'GET',
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
-      })).then(function(response) {
-        localStorage.myAvatar = response.avatar;
-      }).then(undefined, function(e) {
-        me.processAjaxResponseToDetectErrorReason(response);
+      })).then(function(resp) {
+        localStorage.myAvatar = resp.avatar;
+        return resp;
+      }).then(undefined, function(resp) {
+        me.processAjaxResponseToDetectErrorReason(resp);
       });
     },
 

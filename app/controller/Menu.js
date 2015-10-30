@@ -16,6 +16,7 @@ Ext.define('Wodu.controller.Menu', {
     logout: function(theButton, e, eOpts) {
       Ext.Viewport.hideMenu('left');
 
-      Wodu.util.Util.letUserLoginManually();
+      Wodu.util.Util.clearUserData();
+      Wodu.util.Util.showLoginView();
     }
 });
