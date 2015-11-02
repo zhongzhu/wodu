@@ -69,7 +69,7 @@ Ext.define('Wodu.controller.SearchBooks', {
     onListItemTap: function(theList, index, target, record, e, eOpts) {
       var bookDetailsView = Ext.create('Wodu.view.BookDetails');
 
-      bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data));
+      bookDetailsView.down('#summary').setRecord(Ext.create('Wodu.model.Book', record.data));
 
       var newRecord;
       if (record.data.current_user_collection) {
