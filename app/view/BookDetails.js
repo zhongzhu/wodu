@@ -35,7 +35,7 @@ Ext.define('Wodu.view.BookDetails', {
             {
                 xtype: 'container',
                 layout: 'fit',
-                margin: '0 0 5 0',
+                margin: 5,
                 scrollable: 'vertical',
                 flex: 5,
                 items: [{
