@@ -42,7 +42,6 @@ Ext.define('Wodu.controller.BooksRead', {
       if (0 === store.getCount()) {
         Wodu.util.Util.getBookCollections('read', store);
       }
-
     },
 
     onlistItemTap: function(theList, index, target, record, e, eOpts) {

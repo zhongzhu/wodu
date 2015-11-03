@@ -77,12 +77,15 @@ Ext.define('Wodu.controller.BooksReading', {
     },
 
     onNaviViewShow: function(theBooksreadingNaviView, eOpts) {
+      var store = Ext.getStore('BooksReadingStore');
+      if (0 === store.getCount()) {
+        Wodu.util.Util.getBookCollections('reading', store);
+      }
     },
 
     onBooksReadinglistItemTap: function(theList, index, target, record, e, eOpts) {
       var bookDetailsView = Ext.create('Wodu.view.BookDetails');
 
-      // bookDetailsView.setRecord(Ext.create('Wodu.model.Book', record.data.book));
       bookDetailsView.down('#book_title').setRecord(record);
       bookDetailsView.down('#summary').setRecord(Ext.create('Wodu.model.Book', record.data.book));
 

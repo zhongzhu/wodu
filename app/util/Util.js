@@ -233,7 +233,8 @@ Ext.define('Wodu.util.Util', {
       proxy.setExtraParams({
         fields: 'title,image,author,summary,publisher,pubdate,isbn13,pages,price,id,rating,images,current_user_collection',
         q: searchText,
-        apikey: this.myApikey
+        apikey: this.myApikey,
+        timeout: 15000
       });
 
       proxy.setUrl('https://api.douban.com/v2/book/search');
@@ -255,7 +256,8 @@ Ext.define('Wodu.util.Util', {
       proxy.setExtraParams({
         fields: 'updated,status,id,book_id,book',
         status: status,
-        apikey: this.myApikey
+        apikey: this.myApikey,
+        timeout: 15000
       });
       proxy.on('exception', function(theProxy, response, operation, eOpts) {
         me.processAjaxResponseToDetectErrorReason(response);
@@ -273,7 +275,7 @@ Ext.define('Wodu.util.Util', {
         url: 'https://api.douban.com/v2/book/' + bookId + '/collection',
         method: 'DELETE',
         headers: {Authorization: 'Bearer ' + localStorage.myToken}
-      })).then(undefined, function(e) {
+      })).then(undefined, function(response) {
         me.processAjaxResponseToDetectErrorReason(response);
       });
     },    
@@ -288,7 +290,7 @@ Ext.define('Wodu.util.Util', {
           method: 'POST',
           data: 'status=wish',
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
-      })).then(undefined, function(e) {
+      })).then(undefined, function(response) {
         me.processAjaxResponseToDetectErrorReason(response);
       });
     },
@@ -303,7 +305,7 @@ Ext.define('Wodu.util.Util', {
           method: 'PUT',
           data: 'status=' + status,
           headers: {Authorization: 'Bearer ' + localStorage.myToken}
-      })).then(undefined, function(e) {  
+      })).then(undefined, function(response) {
         me.processAjaxResponseToDetectErrorReason(response);
       });
     }
