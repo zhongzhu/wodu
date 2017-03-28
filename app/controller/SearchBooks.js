@@ -88,6 +88,7 @@ Ext.define('Wodu.controller.SearchBooks', {
       }
 
       bookDetailsView.down('#book_title').setRecord(newRecord);
+      bookDetailsView.down('#moveToWishButton').hide();
 
       var theNaviView = this.getTheNaviView();
       var current_user_collection = record.data.current_user_collection;

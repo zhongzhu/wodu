@@ -50,8 +50,15 @@ Ext.define('Wodu.view.BookDetails', {
                 flex: 1,
                 xtype: 'button',
                 itemId: 'deleteButton',
-                text: '不看了'
-            }
+                text: '不想看了'
+            },
+            {
+                margin: '0 5 5 5',
+                flex: 1,
+                xtype: 'button',
+                itemId: 'moveToWishButton',
+                text: '以后再看吧'
+            }            
         ]
     }
 

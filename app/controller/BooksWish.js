@@ -49,6 +49,7 @@ Ext.define('Wodu.controller.BooksWish', {
 
       bookDetailsView.down('#book_title').setRecord(record);
       bookDetailsView.down('#summary').setRecord(Ext.create('Wodu.model.Book', record.data.book));
+      bookDetailsView.down('#moveToWishButton').hide();
 
       this.getTheNaviView().push(bookDetailsView);
     }

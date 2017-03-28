@@ -21,6 +21,9 @@ Ext.define('Wodu.controller.BookDetails', {
             'bookdetails #deleteButton': {
                 tap: 'onDeleteButtonTap'
             },
+            'bookdetails #moveToWishButton': {
+              tap: 'iWantToReadAgainTheBook'
+            },
 
             'searchbooksnaviview #readButton': {
               tap: 'iHaveReadTheBook'
