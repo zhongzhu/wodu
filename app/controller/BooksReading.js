@@ -89,6 +89,7 @@ Ext.define('Wodu.controller.BooksReading', {
       bookDetailsView.down('#book_title').setRecord(record);
       bookDetailsView.down('#summary').setRecord(Ext.create('Wodu.model.Book', record.data.book));
       bookDetailsView.down('#moveToWishButton').show();
+      bookDetailsView.down('#deleteButton').hide();
 
       this.getTheNaviView().push(bookDetailsView);
     }

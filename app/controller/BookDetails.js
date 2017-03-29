@@ -22,14 +22,14 @@ Ext.define('Wodu.controller.BookDetails', {
                 tap: 'onDeleteButtonTap'
             },
             'bookdetails #moveToWishButton': {
-              tap: 'iWantToReadAgainTheBook'
+              tap: 'changeBookFromReadingToWish'
             },
 
             'searchbooksnaviview #readButton': {
-              tap: 'iHaveReadTheBook'
+              tap: 'changeBookFromReadingToRead'
             },
             'booksreadingnaviview #readButton': {
-              tap: 'iHaveReadTheBook'
+              tap: 'changeBookFromReadingToRead'
             },
 
             'searchbooksnaviview #readingButton': {
@@ -77,6 +77,25 @@ Ext.define('Wodu.controller.BookDetails', {
       }); 
     },
 
+    changeBookFromReadingToWish: function(theButton, e, eOpts) {
+      var record = this.getBookDetails().down('#book_title').getRecord();
+      var bookId = record.data.book.id;
+
+      Wodu.util.Util.changeBookCollectionStatus(bookId, 'wish')
+      .then(function(response) {
+          Ext.getStore('BooksReadingStore').remove(record);
+
+          var toStore = Ext.getStore('BooksWishStore');
+          if (toStore.getCount() > 0) {
+              toStore.insert(0, Ext.create('Wodu.model.ReadingInfo', response));
+          }
+
+          theButton.up('navigationview').pop();
+      }).then(undefined, function(e) {  
+          Ext.Msg.alert('出错了', e.message);
+      }); 
+    },    
+
     iWishToReadTheBook: function(theButton, e, eOpts) {
       var record = this.getBookDetails().down('#book_title').getRecord();
       var bookId = record.data.book.id;
@@ -94,7 +113,7 @@ Ext.define('Wodu.controller.BookDetails', {
       });
     },
 
-    iHaveReadTheBook: function(theButton, e, eOpts) {
+    changeBookFromReadingToRead: function(theButton, e, eOpts) {
       var record = this.getBookDetails().down('#book_title').getRecord();
       var bookId = record.data.book.id;
 
